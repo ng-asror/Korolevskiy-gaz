@@ -2,7 +2,12 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { environment } from '../../../environments/environment.development';
-import { IDecoration, IMyOrdersRes, IOrderCreateRes } from '../interfaces';
+import {
+  IDecoration,
+  IMyOrdersRes,
+  IOrderCreateRes,
+  IServices,
+} from '../interfaces';
 
 @Injectable({
   providedIn: 'root',
@@ -26,6 +31,10 @@ export class Order {
       `${environment.url}/public/orders/${id}/delete`,
       { tg_id }
     );
+  }
+
+  getServices(): Observable<IServices> {
+    return this.http.get<IServices>(`${environment.url}/public/services`);
   }
 
   myOrders(tg_id: string): Observable<IMyOrdersRes> {

@@ -1,4 +1,4 @@
-<ng-container *ngIf="localBasket | async as getBasket">
+<ng-container *ngIf="localBasket | async as getBasket" ; else nodata>
 	<ng-container *ngIf="getBasket.azots!.length !== 0 || getBasket.accessories!.length !== 0; else nodata">
 		<div class="flex items-center justify-between mb-[25px]">
 			<a routerLink="/" class="block">

@@ -1,8 +1,12 @@
+import { firstValueFrom } from 'rxjs';
 import { IBasket } from '../interfaces';
 import { Basket } from '../services';
 
 export function calcCont(res: IBasket, basketService: Basket): void {
   const currentBasket = basketService.localBasket.getValue();
+  firstValueFrom(basketService.decoration$).then((res) => {
+    if (res) basketService.decorationNext(null);
+  });
   const accessoriesCount = res.data.accessories.reduce(
     (sum, item) => sum + item.quantity,
     0

@@ -5,3 +5,4 @@ export * from './layout';
 export * from './basket';
 export * from './order';
 export * from './promo';
+export * from './services';

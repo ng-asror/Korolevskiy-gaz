@@ -2,12 +2,13 @@
 	<a routerLink="/" class="block">
 		<img src="svg/back.svg" alt="back svg" width="25" height="25" />
 	</a>
-	<h3 class="text-black text-[24px] leading-[normal] font-[700]">Оформление заказа</h3>
+	<h3 class="text-black text-[24px] leading-[normal] font-[700]">Заказы</h3>
 	<div></div>
 </div>
 <ng-container *ngIf="(orders$ | async) as orders">
 	<section id="content">
 		<div class="grid grid-cols-1 gap-y-[4px] mb-[46px]">
-			<app-order-card *ngFor="let item of orders.data" [order]="item"></app-order-card>
+			<app-order-card (click)="goOformit({ success: orders.success, data: item })" *ngFor="let item of orders.data"
+				[order]="item"></app-order-card>
 		</div>
 	</section>

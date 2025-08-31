@@ -24,7 +24,7 @@ export interface IOrderResData {
   user_id: number;
   promocode_id: number | null;
   payment_type: string | null;
-  promo_price: string;
+  promo_price: number;
   cargo_price: string | null;
   all_price: string;
   total_price: string;

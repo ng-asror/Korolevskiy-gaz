@@ -1,8 +1,8 @@
-<div class="bg-[#E9E4E0] py-[21px] px-[11px] rounded-[10px]" *ngIf="orderInp() as order">
+<div class="bg-[#E9E4E0] py-[21px] px-[11px] rounded-[10px] cursor-pointer" *ngIf="orderInp() as order">
 	<div class="border-b-1 border-[#cbcbcb] pb-[15px] mb-[15px]">
 		<div class="flex items-end gap-x-[10px]">
 			<h1 class="text-black text-[18px] font-bold">Заказ №{{order.id}}</h1>
-			<p class="text-[#9B9B9B]">от 12.04.2025</p>
+			<p class="text-[#9B9B9B]">от {{order.created_at | date: 'dd.mm.yyyy'}}</p>
 			<button type="button" class="ml-auto cursor-pointer" (click)="deleteOrder(order.id)">
 				<img src="svg/delete.svg" alt="delete icon" width="25" height="25">
 			</button>

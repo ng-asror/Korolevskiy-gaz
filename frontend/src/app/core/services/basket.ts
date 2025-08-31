@@ -1,11 +1,13 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { effect, Injectable, signal } from '@angular/core';
 import { BehaviorSubject, catchError, Observable, of, tap } from 'rxjs';
 import {
   IBasket,
   IDecoration,
   ILocalBasket,
+  IMyOrdersRes,
   IOrderCreateRes,
+  IOrderResData,
   IPromocode,
   IPromoRes,
 } from '../interfaces';
@@ -15,14 +17,30 @@ import { environment } from '../../../environments/environment.development';
   providedIn: 'root',
 })
 export class Basket {
-  constructor(private http: HttpClient) {}
   localBasket = new BehaviorSubject<ILocalBasket | null>(null);
-  private decoration = new BehaviorSubject<IOrderCreateRes | null>(null);
+  private decoration = new BehaviorSubject<IOrderResData | null>(null);
   private promo = new BehaviorSubject<IPromocode | null>(null);
-
+  decorationProductCount = signal<number>(0);
   public localBasket$ = this.localBasket.asObservable();
   public decoration$ = this.decoration.asObservable();
   public promocode$ = this.promo.asObservable();
+
+  constructor(private http: HttpClient) {
+    effect(() => {
+      const dec = this.decoration.getValue();
+      if (dec) {
+        const accessorCount = dec.accessories.reduce(
+          (count, item) => count + item.count,
+          0
+        );
+        const azotCount = dec.azots.reduce(
+          (count, item) => count + item.count,
+          0
+        );
+        this.decorationProductCount.set(azotCount + accessorCount);
+      }
+    });
+  }
 
   getBasket(tg_id: string): Observable<IBasket> {
     return this.http
@@ -64,8 +82,7 @@ export class Basket {
         }),
         catchError((error) => {
           if (error instanceof HttpErrorResponse) {
-            if (error.status === 400 || error.status === 404)
-              this.promo.next(null);
+            this.promo.next(null);
           }
           return of();
         })
@@ -84,6 +101,7 @@ export class Basket {
    * @param data
    */
   public decorationNext(data: IOrderCreateRes | null): void {
-    this.decoration.next(data);
+    if (data) this.decoration.next(data.data);
+    else this.decoration.next(null);
   }
 }

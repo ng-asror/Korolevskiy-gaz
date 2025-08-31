@@ -1,6 +1,6 @@
 <ng-container *ngIf="getProduct().product as product">
 	<div class="flex items-center gap-x-[15px]" *ngIf="'azot' in product">
-		<div class="relative">
+		<div>
 			<div class="bg-white rounded-[10px] overflow-hidden flex justify-center w-[110px] h-[96px]">
 				<img [src]="product.azot.image_url" [alt]="product.azot.title" class="block w-full h-[100%]"
 					[ngClass]="getProduct().productType === 'azot'? 'object-cover object-top':'object-contain object-center'">

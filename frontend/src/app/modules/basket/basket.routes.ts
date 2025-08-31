@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+import { oformitGuard } from '../../guards';
 
 export const basketRoutes: Routes = [
   {
@@ -7,6 +8,7 @@ export const basketRoutes: Routes = [
     children: [
       {
         path: '',
+        canActivate: [oformitGuard],
         loadComponent: () => import('./pages').then((c) => c.Products),
       },
       {
