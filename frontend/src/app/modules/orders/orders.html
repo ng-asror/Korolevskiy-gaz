@@ -1,14 +1,38 @@
-<div class="flex items-center justify-between mb-[25px]">
-	<a routerLink="/" class="block">
-		<img src="svg/back.svg" alt="back svg" width="25" height="25" />
-	</a>
-	<h3 class="text-black text-[24px] leading-[normal] font-[700]">Заказы</h3>
-	<div></div>
-</div>
-<ng-container *ngIf="(orders$ | async) as orders">
+<ng-container *ngIf="(orders$ | async) as orders;else noOrders">
+	<div class="flex items-center justify-between mb-[25px]">
+		<a routerLink="/" class="block">
+			<img src="svg/back.svg" alt="back svg" width="25" height="25" />
+		</a>
+		<h3 class="text-black text-[24px] leading-[normal] font-[700]">Заказы</h3>
+		<div></div>
+	</div>
 	<section id="content">
 		<div class="grid grid-cols-1 gap-y-[4px] mb-[46px]">
-			<app-order-card (click)="goOformit({ success: orders.success, data: item })" *ngFor="let item of orders.data"
-				[order]="item"></app-order-card>
+			<div class="relative" *ngFor="let item of orders.data">
+				<button type="button" class="ml-auto cursor-pointer absolute top-[10px] right-[11px]"
+					(click)="deleteOrder(item.id)">
+					<img src="svg/delete.svg" alt="delete icon" width="25" height="25">
+				</button>
+				<app-order-card
+					(click)="item.status_text === 'не оформлен' ? goOformit({ success: orders.success, data: item }) : null"
+					[order]="item">
+				</app-order-card>
+
+			</div>
 		</div>
 	</section>
+</ng-container>
+<ng-template #noOrders>
+	<div class="flex w-full flex-col items-center font-sans text-center fixed max-w-[768px] mx-auto"
+		style="top: 50%; left: 50%; transform: translate(-50%, -50%);">
+		<img src="svg/empty.svg" alt="empty" class="block w-full max-w-[70%]">
+		<p class="text-[16px] leading-4 text-white font-bold mt-5">В заказах пусто</p>
+		<p class="text-[14px] leading-4 text-[#757575] text-center font-medium mt-3">Добавляйте сюда любимые товары<br>и
+			оформляйте заказы всего в пару кликов</p>
+		<a class="flex items-center justify-center gap-2 w-3/4 bg-gradient text-black text-center rounded-lg py-2.5 mt-10"
+			routerLink="/">
+			<img src="svg/water.svg" alt="">
+			К покупкам
+		</a>
+	</div>
+</ng-template>

@@ -15,7 +15,7 @@
 							[(ngModel)]="allChecked" (change)="toggleAllChecked()">
 						<label for="allChecked" class="text-[16px] cursor-pointer font-normal text-black">Выбрать все</label>
 					</div>
-					<div class="flex items-center">
+					<div class="flex items-center" (click)="deleteAll()">
 						<img src="svg/x.svg" alt="x svg" width="25" height="25">
 						<p class="text-[16px] cursor-pointer font-normal text-[#FF6161]">Удалить выбранное</p>
 					</div>

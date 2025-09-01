@@ -28,4 +28,11 @@ export class Orders implements OnInit {
     this.basketService.decorationNext(data);
     this.router.navigate(['/basket/oformit']);
   }
+
+  protected async deleteOrder(id: number): Promise<void> {
+    const tg_id = (await this.telegram.getTgUser()).user.id.toString();
+    await firstValueFrom(this.ordersService.deleteOrder(tg_id, id)).then(() => {
+      this.ordersService.deleteLocalOrder(id);
+    });
+  }
 }

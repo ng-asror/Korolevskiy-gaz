@@ -1,9 +1,8 @@
-import { DatePipe, NgFor, NgIf } from '@angular/common';
+import { DatePipe, NgClass, NgFor, NgIf } from '@angular/common';
 import { Component, effect, inject, input, signal } from '@angular/core';
 import { NumberPipe } from '../../../../pipe';
 import { ProductCard } from '../product-card/product-card';
 import { Order, Telegram } from '../../../../core';
-import { firstValueFrom } from 'rxjs';
 import { IMyOrdersRes } from '../../../../core/interfaces';
 
 export interface Status {
@@ -20,7 +19,7 @@ export type StatusKey =
 
 @Component({
   selector: 'app-order-card',
-  imports: [ProductCard, NumberPipe, NgFor, NgIf, DatePipe],
+  imports: [ProductCard, NumberPipe, NgFor, NgIf, DatePipe, NgClass],
   templateUrl: './order-card.html',
   styleUrl: './order-card.scss',
 })
@@ -44,12 +43,6 @@ export class OrderCard {
       );
 
       this.order_count.set(azots_count + accessor_count);
-    });
-  }
-  protected async deleteOrder(id: number): Promise<void> {
-    const tg_id = (await this.telegram.getTgUser()).user.id.toString();
-    await firstValueFrom(this.ordersService.deleteOrder(tg_id, id)).then(() => {
-      this.ordersService.deleteLocalOrder(id);
     });
   }
 

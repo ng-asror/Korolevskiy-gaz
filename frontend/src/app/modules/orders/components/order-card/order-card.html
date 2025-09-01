@@ -1,11 +1,9 @@
-<div class="bg-[#E9E4E0] py-[21px] px-[11px] rounded-[10px] cursor-pointer" *ngIf="orderInp() as order">
+<div class="bg-[#E9E4E0] py-[21px] px-[11px] rounded-[10px]" *ngIf="orderInp() as order"
+	[ngClass]="order.status === 'new'? 'cursor-pointer': ''">
 	<div class="border-b-1 border-[#cbcbcb] pb-[15px] mb-[15px]">
 		<div class="flex items-end gap-x-[10px]">
 			<h1 class="text-black text-[18px] font-bold">Заказ №{{order.id}}</h1>
 			<p class="text-[#9B9B9B]">от {{order.created_at | date: 'dd.mm.yyyy'}}</p>
-			<button type="button" class="ml-auto cursor-pointer" (click)="deleteOrder(order.id)">
-				<img src="svg/delete.svg" alt="delete icon" width="25" height="25">
-			</button>
 		</div>
 		<h4 class="leading-[100%] font-[500] text-[14px] text-[#DC1F1F]" [style.color]="STATUS_MAP[order.status].color">
 			{{order.status_text}}</h4>
@@ -24,6 +22,8 @@
 		</p>
 		<p class="text-[#B9B9B9] font-[400] text-[14px]">Сумма: <span class="text-black font-[700]">{{order.total_price|
 				uzPrice}}
-				₽</span></p>
+				₽</span> <del class="ml-2 text-black/50 font-normal text-sm italic" *ngIf="order.promocode">
+				{{order.all_price | uzPrice}}₽
+			</del></p>
 	</div>
 </div>

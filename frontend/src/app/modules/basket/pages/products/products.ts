@@ -95,36 +95,8 @@ export class Products implements AfterViewInit {
     }
   }
 
-  deleteAll(order_id: string): void {
-    // if (
-    //   this.order.getValue()!.aksessuari.length ===
-    //     this.orderDataIds.aksessuari.length &&
-    //   this.order.getValue()!.azot.length === this.orderDataIds.azot.length
-    // ) {
-    //   this.deleteOrder(order_id).finally(() => {
-    //     localStorage.removeItem('order_id');
-    //     localStorage.removeItem('checkout');
-    //     this.orderService.basketCount.set(0);
-    //   });
-    // } else if (
-    //   this.orderDataIds.aksessuari.length !== 0 ||
-    //   this.orderDataIds.azot.length !== 0
-    // ) {
-    //   this.orderDataIds.aksessuari.forEach(async (item) => {
-    //     await firstValueFrom(
-    //       this.aksessuarService.deleteAksessuar(order_id, item)
-    //     ).then(() => {
-    //       this.getOrder(order_id);
-    //     });
-    //   });
-    //   this.orderDataIds.azot.forEach(async (item) => {
-    //     await firstValueFrom(this.orderService.deleteAzot(order_id, item)).then(
-    //       () => {
-    //         this.getOrder(order_id);
-    //       }
-    //     );
-    //   });
-    // }
+  deleteAll(): void {
+    console.log(this.selectedItems());
   }
 
   protected async createOrder(): Promise<void> {

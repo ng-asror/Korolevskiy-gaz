@@ -45,7 +45,11 @@ export class Order {
       })
       .pipe(
         tap((res) => {
-          this.localOrders.next(res);
+          if (res.data.length !== 0) {
+            this.localOrders.next(res);
+          } else {
+            this.localOrders.next(null);
+          }
         })
       );
   }
