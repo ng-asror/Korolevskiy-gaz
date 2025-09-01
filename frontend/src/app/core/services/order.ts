@@ -6,6 +6,7 @@ import {
   IDecoration,
   IMyOrdersRes,
   IOrderCreateRes,
+  IOrderFinishReq,
   IServices,
 } from '../interfaces';
 
@@ -49,6 +50,12 @@ export class Order {
       );
   }
 
+  ofotmitFinish(id: number, data: IOrderFinishReq): Observable<any> {
+    return this.http.post<any>(
+      `${environment.url}/public/orders/${id}/finish`,
+      data
+    );
+  }
   deleteLocalOrder(id: number): void {
     const current = this.localOrders.getValue();
     if (!current) return;

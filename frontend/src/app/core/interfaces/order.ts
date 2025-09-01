@@ -26,8 +26,8 @@ export interface IOrderResData {
   payment_type: string | null;
   promo_price: number;
   cargo_price: string | null;
-  all_price: string;
-  total_price: string;
+  all_price: number;
+  total_price: number;
   price_type: string | null;
   address: string | null;
   phone: string | null;
@@ -109,4 +109,13 @@ export interface IOrderAccessor {
     updated_at: string;
     image_url: string;
   };
+}
+
+export interface IOrderFinishReq {
+  phone: string;
+  address: string;
+  comment: string;
+  cargo_with: boolean;
+  payment_type: string;
+  service_ids: number[];
 }

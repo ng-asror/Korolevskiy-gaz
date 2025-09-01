@@ -26,6 +26,7 @@
     "@angular/forms": "^20.1.0",
     "@angular/platform-browser": "^20.1.0",
     "@angular/router": "^20.1.0",
+    "@ngneat/input-mask": "^6.1.0",
     "@tailwindcss/postcss": "^4.1.12",
     "@telegram-apps/sdk": "^3.11.4",
     "postcss": "^8.5.6",

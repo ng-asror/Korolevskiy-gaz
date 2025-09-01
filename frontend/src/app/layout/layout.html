@@ -1,9 +1,10 @@
 <main class="w-full h-screen">
-	<div class="flex items-center justify-between container py-[10px]">
+	<div class="flex items-center justify-between container relative py-[10px]" *ngIf="updates.value() as updates">
 		<a routerLink="/catalog" class="block">
-			<img src="images/logo.png" alt="logo icon" width="81" height="44" class="block">
+			<img [src]="updates.data.site_logo" alt="logo icon" width="81" height="44" class="block">
 		</a>
-		<a routerLink="/catalog" class="text-[24px] font-bold txt-liner">Бесплатная доставка</a>
+		<a routerLink="/catalog"
+			class="text-[24px] absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 font-bold txt-liner">{{updates.data.site_title}}</a>
 		<div></div>
 	</div>
 	<div class="content px-[10px]">

@@ -7,7 +7,7 @@
 </div>
 <ng-container *ngIf="decoration$ | async as decoration">
 	<section id="content" class="relative">
-		<div class="grid grid-cols-1 gap-y-[4px] mb-[46px]">
+		<form class="grid grid-cols-1 gap-y-[4px] mb-[50px]" [formGroup]="orderInfo">
 			<div class="bg-[#E9E4E0] py-[21px] px-[11px] rounded-[10px]">
 				<div class="flex items-end justify-between pb-[15px] border-b-1 border-[#cbcbcb] mb-[15px]">
 					<h1 class="text-black text-[18px] font-bold">Заказ №{{decoration.id}}</h1>
@@ -51,22 +51,24 @@
 						<div class="flex items-center bg-gradient w-[35px] h-[35px] justify-center p-[5px] rounded-[5px]">
 							<img src="svg/phone.svg" alt="phone svg" class="w-full h-full">
 						</div>
-						<input type="text" placeholder="Номер телефона получателя" formControlName="phone"
-							class="h-[35px] flex-1 outline-none w-full px-[11px] bg-[#191919] rounded-[5px] text-[14px] placeholder:text-[#9B9B9B]">
+						<input type="text" [inputMask]="phoneMask" placeholder="Номер телефона получателя" formControlName="phone"
+							class="h-[35px] flex-1 outline-none w-full text-white px-[11px] bg-[#191919] rounded-[5px] text-[14px] placeholder:text-[#9B9B9B]">
 					</div>
 					<div class="flex items-center gap-x-[4px]">
 						<div class="bg-gradient flex items-center w-[35px] h-[35px] justify-center p-[5px] rounded-[5px]">
 							<img src="svg/home.svg" alt="phone svg" class="w-full h-full">
 						</div>
-						<input type="text" placeholder="Адрес доставка" formControlName="adress"
-							class="h-[35px] flex-1 outline-none w-full px-[11px] bg-[#191919] rounded-[5px] text-[14px] placeholder:text-[#9B9B9B]">
+						<input type="text" placeholder="Адрес доставка" required formControlName="adress"
+							class="h-[35px] flex-1 outline-none w-full text-white px-[11px] bg-[#191919] rounded-[5px] text-[14px] placeholder:text-[#9B9B9B]">
 					</div>
-					<label for="cargo" class="flex items-center gap-x-[4px]">
-						<input type="checkbox" id="cargo" class="w-[35px] h-[35px] big rounded-[5px] outline-none">
+					<label for="cargo" class="flex cursor-pointer items-center gap-x-[4px]" *ngIf="updates.value() as updates">
+						<input type="checkbox" id="cargo" formControlName="cargo_with"
+							(change)="cargo_with(updates.data.cargo_price, $event)"
+							class="w-[35px] h-[35px] big rounded-[5px] outline-none">
 						<div
 							class="h-[35px] flex-1 outline-none w-full px-[11px] bg-[#191919] rounded-[5px] text-[16px] flex items-center justify-between">
 							<p class="text-[14px] text-white">Подъем на этаж</p>
-							<p class="text-[14px] text-white">{{decoration.cargo_price | uzPrice}} ₽</p>
+							<p class="text-[14px] text-white">{{updates.data.cargo_price| uzPrice}} ₽</p>
 						</div>
 					</label>
 					<div class="border-1 border-[#939393] rounded-[10px] py-[11px] px-[17px] flex items-center gap-x-[12px]">
@@ -86,6 +88,52 @@
 						placeholder="Цена доставки может измениться, если доставка производится за пределами МКАД"></textarea>
 				</div>
 			</div>
-		</div>
+			<div *ngIf="services.value() as services" class="bg-[#E9E4E0] py-[21px] px-[11px] rounded-[10px]">
+				<div class="pb-[15px] mb-[15px] border-b-1 border-[#cbcbcb]">
+					<h1 class="text-[18px] leading-[100%] font-medium">Дополнительно</h1>
+				</div>
+				<div class="grid grid-col-1 gap-y-[6px]">
+					<label *ngFor="let item of services.data.data" [for]="item.id"
+						class="flex cursor-pointer items-center gap-x-[4px]"
+						(change)="slugCalc(item.id.toString(), item.name, item.price, $event)">
+						<input type="checkbox" [id]="item.id" class="w-[35px] h-[35px] big rounded-[5px] outline-none">
+						<div
+							class="h-[35px] flex-1 outline-none w-full px-[11px] bg-[#191919] rounded-[5px] text-[16px] flex items-center justify-between">
+							<p class="text-[14px] text-white">{{item.name}}</p>
+							<p class="text-[14px] text-white">{{item.price | uzPrice}}₽</p>
+						</div>
+					</label>
+				</div>
+			</div>
+			<div class="bg-[#E9E4E0] py-[21px] px-[11px] rounded-[10px]">
+				<div class="pb-[15px] mb-[15px] border-b-1 border-[#cbcbcb]">
+					<h1 class="text-[18px] leading-[100%] font-medium">Способ оплаты</h1>
+				</div>
+				<div class="bg-[#717171] mb-[6px] flex items-center justify-between px-[15px] py-[10px] rounded-[5px]"
+					*ngIf="decoration.promocode">
+					<p class="text-[14px] font-medium">{{decoration.promocode.promocode}}</p>
+					<p class="text-[14px] font-medium txt-gradient"> Скидка {{ (decoration.promo_price / decoration.all_price *
+						100) | number: '1.0-1'}}%</p>
+				</div>
+				<div class="grid grid-cols-[1fr_1fr] gap-x-[6px]">
+					<button type="button" (click)="oplata_type.set('Наличные')"
+						[ngClass]="oplata_type() === 'Наличные'? 'bg-gradient': ''"
+						class="bg-[#E9E4E0] flex-1 h-auto py-2 text-[15px] cursor-pointer text-black rounded-[15px]">Наличные</button>
+					<button type="button" (click)="oplata_type.set('Переводом')"
+						class="bg-[#E9E4E0] flex-1 h-auto py-2 text-[15px] cursor-pointer text-black rounded-[15px]"
+						[ngClass]="oplata_type() === 'Переводом'? 'bg-gradient': ''">Переводом</button>
+				</div>
+			</div>
+			<div class="w-full px-[10px] fixed left-0 right-0 bottom-[77px] max-w-[768px] mx-auto">
+				<div class="flex items-center bg-black border-1 border-[#5F5F5F] rounded-[5px]">
+					<button type="submit" (click)="oformit(decoration.id)"
+						class="block w-full text-black h-[46px] bg-gradient flex items-center justify-center rounded-[5px] text-[16px] font-medium">Оформить</button>
+					<p class="shrink-0 min-w-[123px] text-white px-[10px] text-[16px] font-[500] text-center">
+						{{ (decoration.total_price + slugPrice()) | uzPrice }}
+						₽
+					</p>
+				</div>
+			</div>
+		</form>
 	</section>
 </ng-container>
