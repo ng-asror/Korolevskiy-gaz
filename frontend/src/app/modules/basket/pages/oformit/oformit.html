@@ -2,15 +2,15 @@
 	<a routerLink="/" class="block">
 		<img src="svg/back.svg" alt="back svg" width="25" height="25" />
 	</a>
-	<h3 class="text-black text-[24px] leading-[normal] font-[700]">Оформление заказа</h3>
+	<h3 class="text-white text-[24px] leading-[normal] font-[700]">Оформление заказа</h3>
 	<div></div>
 </div>
 <ng-container *ngIf="decoration$ | async as decoration">
 	<section id="content" class="relative">
 		<form class="grid grid-cols-1 gap-y-[4px] mb-[50px]" [formGroup]="orderInfo">
-			<div class="bg-[#E9E4E0] py-[21px] px-[11px] rounded-[10px]">
-				<div class="flex items-end justify-between pb-[15px] border-b-1 border-[#cbcbcb] mb-[15px]">
-					<h1 class="text-black text-[18px] font-bold">Заказ №{{decoration.id}}</h1>
+			<div class="bg-[#2D2D30] py-[21px] px-[11px] rounded-[10px]">
+				<div class="flex items-end justify-between pb-[15px] border-b-1 border-[#696969] mb-[15px]">
+					<h1 class="text-white text-[18px] font-bold">Заказ №{{decoration.id}}</h1>
 					<p class="text-[#9B9B9B]">от {{decoration.created_at | date: 'dd.mm.yyyy'}}</p>
 				</div>
 				<div class="orders">
@@ -22,29 +22,29 @@
 					</div>
 				</div>
 			</div>
-			<div class="bg-[#E9E4E0] py-[21px] px-[11px] rounded-[10px]">
-				<h1 class="text-[18px] text-black leading-[100%] font-medium mb-[6px]">Итого:</h1>
-				<p class="text-black/50 text-[14px] font-normal mb-[5px]">Кол-во товаров: <span class="text-black">{{allCount |
+			<div class="bg-[#2D2D30] py-[21px] px-[11px] rounded-[10px]">
+				<h1 class="text-[18px] text-white leading-[100%] font-medium mb-[6px]">Итого:</h1>
+				<p class="text-white/50 text-[14px] font-normal mb-[5px]">Кол-во товаров: <span class="text-white">{{allCount |
 						uzPrice}}</span>
 				</p>
-				<p class="text-black/50 text-[16px] font-normal">
+				<p class="text-white/50 text-[16px] font-normal">
 					Скидка:
-					<span class="text-black">{{(decoration.promo_price) | uzPrice}}₽</span>
+					<span class="text-white">{{(decoration.promo_price) | uzPrice}}₽</span>
 				</p>
 
-				<h2 class="text-black/50 text-[16px] font-bold mt-[10px] pt-[10px] border-t border-[#cbcbcb]">
+				<h2 class="text-white/50 text-[16px] font-bold mt-[10px] pt-[10px] border-t border-[#696969]">
 					Сумма:
-					<span class="text-black">
+					<span class="text-white">
 						{{(+decoration.all_price - +decoration.promo_price) | uzPrice}}₽
 					</span>
-					<del class="ml-2 text-black/50 font-normal text-sm italic" *ngIf="decoration.promo_price !== 0">
+					<del class="ml-2 text-white/50 font-normal text-sm italic" *ngIf="decoration.promo_price !== 0">
 						{{decoration.all_price | uzPrice}}₽
 					</del>
 				</h2>
 			</div>
-			<div class="bg-[#E9E4E0] py-[21px] px-[11px] rounded-[10px]">
-				<div class="pb-[15px] mb-[15px] border-b-1 border-[#cbcbcb]">
-					<h1 class="text-[18px] leading-[100%] text-black font-medium">Доставка</h1>
+			<div class="bg-[#2D2D30] py-[21px] px-[11px] rounded-[10px]">
+				<div class="pb-[15px] mb-[15px] border-b-1 border-[#696969]">
+					<h1 class="text-[18px] leading-[100%] text-white font-medium">Доставка</h1>
 				</div>
 				<div class="grid grid-cols-1 gap-y-[6px]">
 					<div class="flex items-center gap-x-[4px]">
@@ -78,19 +78,19 @@
 					</div>
 				</div>
 			</div>
-			<div class="bg-[#E9E4E0] py-[21px] px-[11px] rounded-[10px]">
-				<div class="pb-[15px] mb-[15px] border-b-1 border-[#cbcbcb]">
-					<h1 class="text-[18px] leading-[100%] font-medium">Комментарий к заказу</h1>
+			<div class="bg-[#2D2D30] py-[21px] px-[11px] rounded-[10px]">
+				<div class="pb-[15px] mb-[15px] border-b-1 border-[#696969]">
+					<h1 class="text-[18px] text-white leading-[100%] font-medium">Комментарий к заказу</h1>
 				</div>
 				<div class="grid grid-col-1 gap-y-[6px]">
 					<textarea formControlName="comment"
-						class="text-[12px] font-[300] outline-none text-black placeholder:text-[#9B9B9B] border-1 border-[#939393] rounded-[10px] p-[11px] min-h-[100px] gap-x-[12px]"
+						class="text-[12px] font-[300] outline-none text-white placeholder:text-[#9B9B9B] border-1 border-[#939393] rounded-[10px] p-[11px] min-h-[100px] gap-x-[12px]"
 						placeholder="Цена доставки может измениться, если доставка производится за пределами МКАД"></textarea>
 				</div>
 			</div>
-			<div *ngIf="services.value() as services" class="bg-[#E9E4E0] py-[21px] px-[11px] rounded-[10px]">
-				<div class="pb-[15px] mb-[15px] border-b-1 border-[#cbcbcb]">
-					<h1 class="text-[18px] leading-[100%] font-medium">Дополнительно</h1>
+			<div *ngIf="services.value() as services" class="bg-[#2D2D30] py-[21px] px-[11px] rounded-[10px]">
+				<div class="pb-[15px] mb-[15px] border-b-1 border-[#696969]">
+					<h1 class="text-[18px] leading-[100%] text-white font-medium">Дополнительно</h1>
 				</div>
 				<div class="grid grid-col-1 gap-y-[6px]">
 					<label *ngFor="let item of services.data.data" [for]="item.id"
@@ -105,22 +105,22 @@
 					</label>
 				</div>
 			</div>
-			<div class="bg-[#E9E4E0] py-[21px] px-[11px] rounded-[10px]">
-				<div class="pb-[15px] mb-[15px] border-b-1 border-[#cbcbcb]">
-					<h1 class="text-[18px] leading-[100%] font-medium">Способ оплаты</h1>
+			<div class="bg-[#2D2D30] py-[21px] px-[11px] rounded-[10px]">
+				<div class="pb-[15px] mb-[15px] border-b-1 border-[#696969]">
+					<h1 class="text-[18px] leading-[100%] text-white font-medium">Способ оплаты</h1>
 				</div>
-				<div class="bg-[#717171] mb-[6px] flex items-center justify-between px-[15px] py-[10px] rounded-[5px]"
+				<div class="bg-[#191919] mb-[6px] flex items-center justify-between px-[15px] py-[10px] rounded-[5px]"
 					*ngIf="decoration.promocode">
-					<p class="text-[14px] font-medium">{{decoration.promocode.promocode}}</p>
-					<p class="text-[14px] font-medium txt-gradient"> Скидка {{ (decoration.promo_price / decoration.all_price *
+					<p class="text-[14px] text-white font-medium">{{decoration.promocode.promocode}}</p>
+					<p class="text-[14px] font-medium txt-liner"> Скидка {{ (decoration.promo_price / decoration.all_price *
 						100) | number: '1.0-1'}}%</p>
 				</div>
 				<div class="grid grid-cols-[1fr_1fr] gap-x-[6px]">
 					<button type="button" (click)="oplata_type.set('Наличные')"
 						[ngClass]="oplata_type() === 'Наличные'? 'bg-gradient': ''"
-						class="bg-[#E9E4E0] flex-1 h-auto py-2 text-[15px] cursor-pointer text-black rounded-[15px]">Наличные</button>
+						class="bg-[#2D2D30] flex-1 h-auto py-2 text-[15px] cursor-pointer bg-[#E9E4E0] text-black rounded-[15px]">Наличные</button>
 					<button type="button" (click)="oplata_type.set('Переводом')"
-						class="bg-[#E9E4E0] flex-1 h-auto py-2 text-[15px] cursor-pointer text-black rounded-[15px]"
+						class="bg-[#2D2D30] flex-1 h-auto py-2 text-[15px] cursor-pointer bg-[#E9E4E0] text-black rounded-[15px]"
 						[ngClass]="oplata_type() === 'Переводом'? 'bg-gradient': ''">Переводом</button>
 				</div>
 			</div>

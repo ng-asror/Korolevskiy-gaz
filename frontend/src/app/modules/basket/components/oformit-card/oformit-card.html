@@ -9,8 +9,8 @@
 		<div class="w-full">
 			<span class="text-[12px] opacity-50" *ngIf="'price_type' in product">{{product.azot.price_type_name}}, {{
 				product.azot.type}}</span>
-			<h3 class="text-[14px] font-medium text-black">{{product.azot.title}}</h3>
-			<h1 class="text-[18px] font-medium text-black">{{getProduct().product.price | uzPrice}}₽</h1>
+			<h3 class="text-[14px] font-medium text-white">{{product.azot.title}}</h3>
+			<h1 class="text-[18px] font-medium text-white">{{getProduct().product.price | uzPrice}}₽</h1>
 			<span
 				class="min-w-[40px] w-[fit-content] h-[25px] block bg-[#D9D9D9] text-black rounded-[3px] text-[16px] px-[3px] text-center">
 				{{product.count}}</span>
@@ -24,8 +24,8 @@
 			</div>
 		</div>
 		<div class="w-full">
-			<h3 class="text-[14px] font-medium text-black">{{product.accessory.title}}</h3>
-			<h1 class="text-[18px] font-medium text-black">{{getProduct().product.price | uzPrice}}₽</h1>
+			<h3 class="text-[14px] font-medium text-white">{{product.accessory.title}}</h3>
+			<h1 class="text-[18px] font-medium text-white">{{getProduct().product.price | uzPrice}}₽</h1>
 			<span
 				class="min-w-[40px] w-[fit-content] h-[25px] block bg-[#D9D9D9] text-black rounded-[3px] text-[16px] px-[3px] text-center">
 				{{product.count}}</span>

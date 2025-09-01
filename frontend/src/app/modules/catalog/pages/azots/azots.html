@@ -2,7 +2,7 @@
 <div class="grid grid-cols-4 gap-[6px] my-[12px]">
 	<a routerLink="/catalog/azots" [queryParams]="{'liter': item.id}" queryParamsHandling="merge"
 		(click)="selectAzot(item.id)" routerLinkActive="bg-gradient text-black" *ngFor="let item of liters$ | async"
-		class="bg-[#E9E4E0] text-black flex leading-[100%] items-center justify-center rounded-[5px] p-[10px] w-full h-auto">{{item.liter}}</a>
+		class="bg-[#2D2D30] flex leading-[100%] items-center justify-center rounded-[5px] p-[10px] litr w-full h-auto">{{item.liter}}</a>
 </div>
 <div class="grid grid-cols-2 gap-[6px]">
 	<ng-container *ngIf="azotInfo()?.data! as azot">
@@ -10,7 +10,7 @@
 			@let counted = counter.isCounted(item.id);
 			<ng-container *ngIf="counted.counted === false; else counterBtns">
 				<button type="button" (click)="kupit(azot.id, item.id)"
-					class="bg-[#E9E4E0] px-[10px] h-[46px] cursor-pointer leading-[100%] rounded-[5px] text-black">{{item.name}}</button>
+					class="bg-[#2D2D30] px-[10px] h-[46px] cursor-pointer leading-[100%] rounded-[5px] text-white">{{item.name}}</button>
 			</ng-container>
 			<ng-template #counterBtns>
 				<div

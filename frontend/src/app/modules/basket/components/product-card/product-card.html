@@ -3,17 +3,17 @@
 		<div class="relative">
 			<input type="checkbox" [checked]="isChecked(product.product_id)"
 				(change)="toggleItem(product.product_id, 'azot' ,$event)"
-				class="absolute top-[-2px] border-2 w-[23px] h-[23px] left-[-2px] rounded-[5px] border-[2px] border-[#E9E4E0]">
+				class="absolute top-[-2px] border-2 w-[23px] h-[23px] left-[-2px] rounded-[5px] border-[2px] border-[#2D2D30]">
 			<div class="bg-white rounded-[10px] overflow-hidden flex justify-center w-[110px] h-[96px]">
 				<img [src]="product.product.image_url" [alt]="product.name" class="block w-full h-[100%]"
 					[ngClass]="getProduct().productType === 'azot'? 'object-cover object-top':'object-contain object-center'">
 			</div>
 		</div>
 		<div class="w-full">
-			<span class="text-[12px] opacity-50" *ngIf="'price_type' in product">{{product.price_type}}, {{
+			<span class="text-[12px] opacity-50 text-white" *ngIf="'price_type' in product">{{product.price_type}}, {{
 				product.product.type}}</span>
-			<h3 class="text-[14px] font-medium text-black">{{product.name}}</h3>
-			<h1 class="text-[18px] font-medium text-black">{{product.price | uzPrice}}₽</h1>
+			<h3 class="text-[14px] font-medium text-white">{{product.name}}</h3>
+			<h1 class="text-[18px] font-medium text-white">{{product.price | uzPrice}}₽</h1>
 			<div class="flex items-center justify-between gap-x-[5px] mt-[10px]">
 				<div class="flex items-center gap-[5px] w-full max-w-[150px]">
 					<button type="button" (click)="minus(product.product_id)"
