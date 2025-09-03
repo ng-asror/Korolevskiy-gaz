@@ -5,11 +5,12 @@
 			<div class="grid grid-cols-1 gap-y-[4px] mb-[46px]">
 				<div class="flex items-center justify-between bg-[#2D2D30] py-[14px] px-[11px] rounded-[10px]">
 					<div class="flex items-center gap-x-[10px] cursor-pointer">
-						<input type="checkbox" id="allChecked" class="w-[20px] cursor-pointer h-[20px] rounded-[2px]"
-							[(ngModel)]="allChecked" (change)="toggleAllChecked()">
+						<input type="checkbox" [value]="allChecked" id="allChecked"
+							class="w-[20px] cursor-pointer h-[20px] rounded-[2px]" [(ngModel)]="allChecked"
+							(change)="toggleAllChecked()">
 						<label for="allChecked" class="text-[16px] cursor-pointer font-normal text-white">Выбрать все</label>
 					</div>
-					<div class="flex items-center" (click)="deleteAll()">
+					<div class="flex items-center" (click)="deleteProduct()">
 						<img src="svg/x.svg" alt="x svg" width="25" height="25">
 						<p class="text-[16px] cursor-pointer font-normal text-[#FF6161]">Удалить выбранное</p>
 					</div>
@@ -17,12 +18,12 @@
 				<div class="bg-[#2D2D30] py-[21px] px-[11px] rounded-[10px] orders">
 					<!-- Azots -->
 					<div class="order-item" *ngFor="let azot of getBasket.azots">
-						<app-product-card [selectItems]="selectedItems()" (azotToggle)="onToggled($event)" class="w-full"
+						<app-product-card [selectItems]="selectedItems().azot" (productToggle)="onToggled($event)" class="w-full"
 							[product]="{product: azot, productType: 'azot'}"></app-product-card>
 					</div>
 					<div class="order-item" *ngFor="let accessor of getBasket.accessories">
-						<app-product-card [selectItems]="selectedItems()" (azotToggle)="onToggled($event)" class="w-full"
-							[product]="{product: accessor, productType: 'accessor'}"></app-product-card>
+						<app-product-card [selectItems]="selectedItems().accessor" (productToggle)="onToggled($event)"
+							class="w-full" [product]="{product: accessor, productType: 'accessor'}"></app-product-card>
 					</div>
 				</div>
 				@let promocode = promocode$ | async;

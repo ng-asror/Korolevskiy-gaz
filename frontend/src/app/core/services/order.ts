@@ -3,7 +3,6 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { environment } from '../../../environments/environment.development';
 import {
-  IDecoration,
   IMyOrdersRes,
   IOrderCreateRes,
   IOrderFinishReq,

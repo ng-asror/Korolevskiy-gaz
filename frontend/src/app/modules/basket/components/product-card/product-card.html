@@ -2,7 +2,7 @@
 	<div class="flex items-center gap-x-[15px] order-item">
 		<div class="relative">
 			<input type="checkbox" [checked]="isChecked(product.product_id)"
-				(change)="toggleItem(product.product_id, 'azot' ,$event)"
+				(change)="toggleItem(product.product.id, getProduct().productType, $event)"
 				class="absolute top-[-2px] border-2 w-[23px] h-[23px] left-[-2px] rounded-[5px] border-[2px] border-[#2D2D30]">
 			<div class="bg-white rounded-[10px] overflow-hidden flex justify-center w-[110px] h-[96px]">
 				<img [src]="product.product.image_url" [alt]="product.name" class="block w-full h-[100%]"
@@ -28,9 +28,18 @@
 						<img src="svg/plus.svg" alt="plus icon" class="w-full">
 					</button>
 				</div>
-				<button type="button" class="w-[24px] cursor-pointer h-[24px]">
-					<img src="svg/delete.svg" alt="delete svg" class="w-full">
-				</button>
+				<ng-container *ngIf="'price_type' in product;else deleteAccessor">
+					<button type="button" class="w-[24px] cursor-pointer h-[24px]"
+						(click)="delete(product.product.id, product.quantity, product.price_type_id)">
+						<img src="svg/delete.svg" alt="delete svg" class="w-full">
+					</button>
+				</ng-container>
+				<ng-template #deleteAccessor>
+					<button type="button" class="w-[24px] cursor-pointer h-[24px]"
+						(click)="delete(product.product.id, product.quantity)">
+						<img src="svg/delete.svg" alt="delete svg" class="w-full">
+					</button>
+				</ng-template>
 			</div>
 		</div>
 	</div>

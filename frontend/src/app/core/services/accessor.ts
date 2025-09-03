@@ -37,11 +37,16 @@ export class Accessor {
       );
   }
 
-  minus(tg_id: string, product_id: number): Observable<IBasket> {
+  minus(
+    tg_id: string,
+    product_id: number,
+    quantity?: number
+  ): Observable<IBasket> {
     return this.http
       .post<IBasket>(`${environment.url}/public/cart/minus/accessuary`, {
         tg_id,
         product_id,
+        quantity,
       })
       .pipe(
         tap((res) => {

@@ -3,7 +3,6 @@ import {
   effect,
   inject,
   input,
-  OnInit,
   output,
   signal,
 } from '@angular/core';
@@ -34,9 +33,9 @@ export class ProductCard {
   getSelectItems = input.required<number[]>({ alias: 'selectItems' });
   protected productState = signal<IBasketAccessory | IBasketAzot | null>(null);
 
-  azotToggle = output<{
+  productToggle = output<{
     id: number;
-    productType: 'azot' | 'aksessuari';
+    productType: 'azot' | 'accessor';
     event: Event;
   }>();
 
@@ -52,11 +51,11 @@ export class ProductCard {
 
   protected toggleItem(
     id: number,
-    productType: 'azot' | 'aksessuari',
+    productType: 'azot' | 'accessor',
     event: Event
   ): void {
     const data = { id, productType, event };
-    this.azotToggle.emit(data);
+    this.productToggle.emit(data);
   }
 
   protected async minus(id: number): Promise<void> {
@@ -92,6 +91,19 @@ export class ProductCard {
     else if (this.getProduct().productType === 'azot') {
       const azot = this.getProduct().product as IBasketAzot;
       firstValueFrom(this.azotService.kupit(tg_id, id, azot.price_type_id));
+    }
+  }
+
+  async delete(
+    id: number,
+    quantity: number,
+    product_type_id?: number
+  ): Promise<void> {
+    const tg_id = (await this.telegram.getTgUser()).user.id.toString();
+    if (this.getProduct().productType === 'accessor') {
+      await firstValueFrom(this.accessorService.minus(tg_id, id, quantity));
+    } else {
+      await firstValueFrom(this.azotService.minus(tg_id, id, product_type_id!));
     }
   }
 }

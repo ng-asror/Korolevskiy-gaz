@@ -4,6 +4,7 @@ import {
   Component,
   ElementRef,
   inject,
+  OnInit,
   signal,
   ViewChild,
 } from '@angular/core';
@@ -27,7 +28,7 @@ import { Router, RouterLink } from '@angular/router';
   templateUrl: './products.html',
   styleUrl: './products.scss',
 })
-export class Products implements AfterViewInit {
+export class Products implements OnInit, AfterViewInit {
   private telegram = inject(Telegram);
   private basketService = inject(Basket);
   private orderService = inject(Order);
@@ -46,59 +47,69 @@ export class Products implements AfterViewInit {
       )
       .subscribe();
   }
-  private orderDataIds!: { azot: number[]; aksessuari: number[] };
+  ngOnInit(): void {
+    this.localBasket.subscribe({
+      next: (res) => {
+        if (res) {
+          this.orderDataIds = {
+            azot: res.azots.map((item) => item.product.id),
+            accessor: res.accessories.map((item) => item.product.id),
+          };
+        }
+      },
+    });
+  }
+  protected orderDataIds: { azot: number[]; accessor: number[] } = {
+    azot: [],
+    accessor: [],
+  };
 
   protected inputVal: string = '';
   @ViewChild('allChecked') selectorAllCheked!: ElementRef;
   allChecked: boolean = false;
-  selectedItems = signal<number[]>([]);
+  selectedItems = signal<{ azot: number[]; accessor: number[] }>({
+    azot: [],
+    accessor: [],
+  });
 
   protected onToggled(event: {
     id: number;
-    productType: 'azot' | 'aksessuari';
+    productType: 'azot' | 'accessor';
     event: Event;
   }): void {
     const isChecked = (event.event.target as HTMLInputElement).checked;
     if (isChecked) {
-      this.selectedItems().push(event.id);
-      this.orderDataIds[event.productType].push(event.id);
+      this.selectedItems()[event.productType].push(event.id);
     } else {
-      this.selectedItems.set(
-        this.selectedItems().filter((v) => v !== event.id)
-      );
-      this.orderDataIds[event.productType] = this.orderDataIds[
-        event.productType
-      ].filter((v) => v !== event.id);
+      // this.selectedItems.set(
+      //   this.selectedItems().filter((v) => v !== event.id)
+      // );
+      this.selectedItems.set({
+        ...this.selectedItems(),
+        [event.productType]: this.selectedItems()[event.productType].filter(
+          (v) => v !== event.id
+        ),
+      });
     }
+    const allIds = [...this.orderDataIds.azot, ...this.orderDataIds.accessor];
+    this.allChecked =
+      allIds.length ===
+      this.selectedItems().accessor.length + this.selectedItems().azot.length;
   }
 
   toggleAllChecked() {
-    if (this.allChecked) {
-      this.localBasket.subscribe({
-        next: (res) => {
-          if (res) {
-            this.orderDataIds = {
-              azot: res.azots.map((item) => item.product_id),
-              aksessuari: res.accessories.map((item) => item.product_id),
-            };
-          }
-        },
+    if (this.allChecked === true) {
+      this.selectedItems.set({
+        accessor: this.orderDataIds.accessor,
+        azot: this.orderDataIds.azot,
       });
-      this.selectedItems.set([
-        ...this.orderDataIds.azot,
-        ...this.orderDataIds.aksessuari,
-      ]);
     } else {
-      this.orderDataIds = {
-        azot: [],
-        aksessuari: [],
-      };
-      this.selectedItems.set([]);
+      this.selectedItems.set({ accessor: [], azot: [] });
     }
   }
 
-  deleteAll(): void {
-    console.log(this.selectedItems());
+  async deleteProduct(): Promise<void> {
+    const tg_id = (await this.telegram.getTgUser()).user.id.toString();
   }
 
   protected async createOrder(): Promise<void> {
