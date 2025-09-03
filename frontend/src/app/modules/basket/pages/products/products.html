@@ -1,12 +1,6 @@
-<ng-container *ngIf="localBasket | async as getBasket" ; else nodata>
+<ng-container *ngIf="localBasket | async as getBasket;else nodata">
 	<ng-container *ngIf="getBasket.azots!.length !== 0 || getBasket.accessories!.length !== 0; else nodata">
-		<div class="flex items-center justify-between mb-[25px]">
-			<a routerLink="/" class="block">
-				<img src="svg/back.svg" alt="back svg" width="25" height="25" />
-			</a>
-			<h3 class="text-white text-[24px] leading-[normal] font-[700]">Корзина</h3>
-			<div></div>
-		</div>
+		<h3 class="text-white text-[24px] leading-[normal] text-center mb-[25px] font-[700]">Корзина</h3>
 		<section id="content" class="relative">
 			<div class="grid grid-cols-1 gap-y-[4px] mb-[46px]">
 				<div class="flex items-center justify-between bg-[#2D2D30] py-[14px] px-[11px] rounded-[10px]">
@@ -22,25 +16,29 @@
 				</div>
 				<div class="bg-[#2D2D30] py-[21px] px-[11px] rounded-[10px] orders">
 					<!-- Azots -->
-					<app-product-card [selectItems]="selectedItems()" *ngFor="let azot of getBasket.azots"
-						(azotToggle)="onToggled($event)" class="w-full"
-						[product]="{product: azot, productType: 'azot'}"></app-product-card>
-					<app-product-card [selectItems]="selectedItems()" *ngFor="let accessor of getBasket.accessories"
-						(azotToggle)="onToggled($event)" class="w-full"
-						[product]="{product: accessor, productType: 'accessor'}"></app-product-card>
-				</div>
-				@let promocode = promocode$ | async;
-				<div class="bg-[#2D2D30] py-[21px] px-[11px] rounded-[10px]">
-					<h1 class="text-[18px] text-white font-medium mb-[6px]">Промокод</h1>
-					<div class="rounded-[5px] bg-[#191919] grid grid-cols-[1fr_auto] gap-x-[4px] pr-[15px]">
-						<input type="text" #promoInpEl [value]="promocode? promocode.promocode : ''"
-							class="w-full pl-[15px] outline-none text-white text-[12px] font-normal h-[30px]"
-							(input)="promoInp(promoInpEl.value)">
-						<p class="txt-liner text-[12px] self-center max-w-[125px] text-right font-medium" *ngIf="promocode">
-							Скидка {{promocode.amount / getBasket.total_price * 100 | number: '1.0-1'}}%
-						</p>
+					<div class="order-item" *ngFor="let azot of getBasket.azots">
+						<app-product-card [selectItems]="selectedItems()" (azotToggle)="onToggled($event)" class="w-full"
+							[product]="{product: azot, productType: 'azot'}"></app-product-card>
+					</div>
+					<div class="order-item" *ngFor="let accessor of getBasket.accessories">
+						<app-product-card [selectItems]="selectedItems()" (azotToggle)="onToggled($event)" class="w-full"
+							[product]="{product: accessor, productType: 'accessor'}"></app-product-card>
 					</div>
 				</div>
+				@let promocode = promocode$ | async;
+				<ng-container *ngIf="updates$ | async as updates">
+					<div class="bg-[#2D2D30] py-[21px] px-[11px] rounded-[10px]" *ngIf="updates.data.enable_promocode !== 0">
+						<h1 class="text-[18px] text-white font-medium mb-[6px]">Промокод</h1>
+						<div class="rounded-[5px] bg-[#191919] grid grid-cols-[1fr_auto] gap-x-[4px] pr-[15px]">
+							<input type="text" #promoInpEl [value]="promocode? promocode.promocode : ''"
+								class="w-full pl-[15px] outline-none text-white text-[12px] font-normal h-[30px]"
+								(input)="promoInp(promoInpEl.value)">
+							<p class="txt-liner text-[12px] self-center max-w-[125px] text-right font-medium" *ngIf="promocode">
+								Скидка {{promocode.amount / getBasket.total_price * 100 | number: '1.0-1'}}%
+							</p>
+						</div>
+					</div>
+				</ng-container>
 				<div class="bg-[#2D2D30] py-[21px] px-[11px] rounded-[10px]">
 					<h1 class="text-[18px] text-white font-medium mb-[6px]">Итого:</h1>
 					<p class="text-white/50 text-[14px] font-normal mb-[5px]">Кол-во товаров: <span

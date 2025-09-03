@@ -19,6 +19,7 @@ export interface IBasketAzot {
   quantity: number;
   product: {
     id: number;
+    uuid: string;
     title: string;
     type: string;
     image: string;
@@ -31,6 +32,7 @@ export interface IBasketAzot {
   };
   price_types: {
     id: number;
+    uuid: string;
     azot_id: number;
     name: string;
     price: string;
@@ -46,6 +48,7 @@ export interface IBasketAccessory {
   quantity: number;
   product: {
     id: number;
+    uuid: string;
     title: string;
     price: string;
     image: string;
@@ -68,6 +71,7 @@ export interface IBasketService {
 export interface IProduct {
   quantity: number;
   id: number;
+  uuid: string;
   title: string;
   type?: string;
   price?: string;
@@ -101,6 +105,7 @@ export interface IDecoration {
     updated_at: string;
     created_at: string;
     id: number;
+    uuid: string;
     status_text: string;
     azots: IBasketAzot[];
     accessories: IBasketAzot[];
@@ -112,6 +117,7 @@ export interface IDecoration {
 
 export interface IBasketPromocode {
   id: number;
+  uuid: string;
   promocode: string;
   amount: string;
   status: string;

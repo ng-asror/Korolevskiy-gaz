@@ -8,6 +8,7 @@ export const oformitGuard: CanActivateFn = () => {
   const basketService = inject(Basket);
   return basketService.decoration$.pipe(
     map((res) => {
+      console.log(res);
       if (res === null) {
         return true;
       } else {

@@ -21,6 +21,7 @@ export interface IMyOrdersRes {
 }
 export interface IOrderResData {
   id: number;
+  order_number: number;
   user_id: number;
   promocode_id: number | null;
   payment_type: string | null;

@@ -2,7 +2,7 @@
 	[ngClass]="order.status === 'new'? 'cursor-pointer': ''">
 	<div class="border-b-1 border-[#696969] pb-[15px] mb-[15px]">
 		<div class="flex items-end gap-x-[10px]">
-			<h1 class="text-white text-[18px] font-bold">Заказ №{{order.id}}</h1>
+			<h1 class="text-white text-[18px] font-bold">Заказ №{{order.order_number}}</h1>
 			<p class="text-[#9B9B9B]">от {{order.created_at | date: 'dd.mm.yyyy'}}</p>
 		</div>
 		<h4 class="leading-[100%] font-[500] text-[14px] text-[#DC1F1F]" [style.color]="STATUS_MAP[order.status].color">

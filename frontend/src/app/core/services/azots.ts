@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { IAzot, IAzots } from '../interfaces/azot';
@@ -19,18 +19,24 @@ export class Azot {
   readonly liters = new BehaviorSubject<{ id: number; liter: string }[]>([]);
   currentBasket = this.basketService.localBasket.getValue();
 
-  getAzots(): Observable<IAzots> {
-    return this.http.get<IAzots>(`${environment.url}/${this.endpoint}`).pipe(
-      tap((res) => {
-        const arr: { id: number; liter: string }[] = res.data.data.map(
-          (item) => ({
-            id: item.id,
-            liter: item.type,
-          })
-        );
-        this.liters.next(arr);
-      })
+  getAzots(price_type?: 'Выкуп'): Observable<IAzots> {
+    const params = new HttpParams().set(
+      'price_type',
+      price_type ? price_type : ''
     );
+    return this.http
+      .get<IAzots>(`${environment.url}/${this.endpoint}`, { params })
+      .pipe(
+        tap((res) => {
+          const arr: { id: number; liter: string }[] = res.data.data.map(
+            (item) => ({
+              id: item.id,
+              liter: item.type,
+            })
+          );
+          this.liters.next(arr);
+        })
+      );
   }
 
   getAzotInfo(id: number): Observable<IAzot> {

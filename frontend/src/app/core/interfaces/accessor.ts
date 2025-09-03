@@ -6,6 +6,7 @@ export interface IAccessor {
       id: number;
       title: string;
       price: string;
+      uuid: string;
       image: any;
       description: string;
       status: string;

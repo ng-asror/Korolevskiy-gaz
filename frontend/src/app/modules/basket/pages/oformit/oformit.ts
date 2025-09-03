@@ -112,6 +112,7 @@ export class Oformit implements OnInit {
       };
       await firstValueFrom(this.orderService.ofotmitFinish(id, data)).then(
         () => {
+          this.basketService.decorationNext(null);
           this.router.navigate(['/orders']);
         }
       );

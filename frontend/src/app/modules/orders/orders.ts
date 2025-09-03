@@ -3,12 +3,12 @@ import { Basket, Order, Telegram } from '../../core';
 import { firstValueFrom } from 'rxjs';
 import { OrderCard } from './components';
 import { AsyncPipe, NgForOf, NgIf } from '@angular/common';
-import { IMyOrdersRes, IOrderCreateRes } from '../../core/interfaces';
-import { Router } from '@angular/router';
+import { IOrderCreateRes } from '../../core/interfaces';
+import { Router, RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-orders',
-  imports: [OrderCard, NgIf, NgForOf, AsyncPipe],
+  imports: [OrderCard, NgIf, NgForOf, AsyncPipe, RouterLink],
   templateUrl: './orders.html',
   styleUrl: './orders.scss',
 })

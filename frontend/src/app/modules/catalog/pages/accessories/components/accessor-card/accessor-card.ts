@@ -5,6 +5,7 @@ import { NgIf } from '@angular/common';
 import { NumberPipe } from '../../../../../../pipe';
 export interface IAccessorOne {
   id: number;
+  uuid: string;
   title: string;
   price: string;
   image: any;

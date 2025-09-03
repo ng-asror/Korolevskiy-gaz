@@ -8,7 +8,7 @@ import {
   ViewChild,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { Basket, Order, Telegram } from '../../../../core';
+import { Basket, LayoutService, Order, Telegram } from '../../../../core';
 import { ProductCard } from '../../components';
 import { NumberPipe } from '../../../../pipe';
 import { debounceTime, firstValueFrom, Subject, tap } from 'rxjs';
@@ -31,9 +31,11 @@ export class Products implements AfterViewInit {
   private telegram = inject(Telegram);
   private basketService = inject(Basket);
   private orderService = inject(Order);
+  private layoutService = inject(LayoutService);
   private inputSubject = new Subject<string>();
   protected localBasket = this.basketService.localBasket$;
   protected promocode$ = this.basketService.promocode$;
+  protected updates$ = this.layoutService.updates$;
   constructor(private router: Router) {
     this.inputSubject
       .pipe(
