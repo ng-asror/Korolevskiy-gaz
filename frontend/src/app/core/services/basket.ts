@@ -20,27 +20,11 @@ export class Basket {
   localBasket = new BehaviorSubject<ILocalBasket | null>(null);
   private decoration = new BehaviorSubject<IOrderResData | null>(null);
   private promo = new BehaviorSubject<IPromocode | null>(null);
-  decorationProductCount = signal<number>(0);
   public localBasket$ = this.localBasket.asObservable();
   public decoration$ = this.decoration.asObservable();
   public promocode$ = this.promo.asObservable();
 
-  constructor(private http: HttpClient) {
-    effect(() => {
-      const dec = this.decoration.getValue();
-      if (dec) {
-        const accessorCount = dec.accessories.reduce(
-          (count, item) => count + item.count,
-          0
-        );
-        const azotCount = dec.azots.reduce(
-          (count, item) => count + item.count,
-          0
-        );
-        this.decorationProductCount.set(azotCount + accessorCount);
-      }
-    });
-  }
+  constructor(private http: HttpClient) {}
 
   getBasket(tg_id: string): Observable<IBasket> {
     return this.http

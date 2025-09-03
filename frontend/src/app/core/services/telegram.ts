@@ -68,4 +68,7 @@ export class Telegram {
       });
     });
   }
+  showAlert(message: string): void {
+    this.tg.showAlert(message);
+  }
 }

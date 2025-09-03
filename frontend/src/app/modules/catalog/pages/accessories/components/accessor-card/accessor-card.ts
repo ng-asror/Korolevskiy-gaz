@@ -21,26 +21,22 @@ export interface IAccessorOne {
   templateUrl: './accessor-card.html',
   styleUrl: './accessor-card.scss',
 })
-export class AccessorCard implements OnInit {
+export class AccessorCard {
   private accessorService = inject(Accessor);
   protected counterService = inject(Counter);
   private telegram = inject(Telegram);
 
-  tg_id: string = '';
   getAccessor = input.required<IAccessorOne>({
     alias: 'accessor',
   });
 
-  async ngOnInit(): Promise<void> {
-    this.tg_id = await this.telegram.getUserLocalId();
-  }
-
   protected async kupit(product_id: number): Promise<void> {
-    await firstValueFrom(this.accessorService.kupit(this.tg_id, product_id));
+    const tg_id = (await this.telegram.getTgUser()).user.id.toString();
+    await firstValueFrom(this.accessorService.kupit(tg_id, product_id));
   }
 
   protected async minus(product_id: number): Promise<void> {
-    const tg_id = await this.telegram.getUserLocalId();
+    const tg_id = (await this.telegram.getTgUser()).user.id.toString();
     await firstValueFrom(this.accessorService.minus(tg_id, product_id)).then(
       () => {
         this.counterService.isCounted(product_id);

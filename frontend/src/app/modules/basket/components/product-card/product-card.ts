@@ -6,7 +6,11 @@ import {
   output,
   signal,
 } from '@angular/core';
-import { IBasketAccessory, IBasketAzot } from '../../../../core/interfaces';
+import {
+  IBasketAccessory,
+  IBasketAzot,
+  ISelectedItems,
+} from '../../../../core/interfaces';
 import { NgClass, NgIf } from '@angular/common';
 import { Accessor, Telegram } from '../../../../core';
 import { Azot } from '../../../../core';
@@ -30,12 +34,13 @@ export class ProductCard {
   }>({
     alias: 'product',
   });
-  getSelectItems = input.required<number[]>({ alias: 'selectItems' });
+  getSelectItems = input.required<ISelectedItems>({ alias: 'selectItems' });
   protected productState = signal<IBasketAccessory | IBasketAzot | null>(null);
 
   productToggle = output<{
     id: number;
     productType: 'azot' | 'accessor';
+    quantity: number;
     event: Event;
   }>();
 
@@ -45,16 +50,23 @@ export class ProductCard {
     });
   }
 
-  protected isChecked(product_id: number): boolean {
-    return this.getSelectItems().includes(product_id);
+  protected isChecked(
+    product_id: number,
+    productType: 'azot' | 'accessor'
+  ): boolean {
+    return this.getSelectItems()[productType].some(
+      (item) => item.id === product_id
+    );
   }
 
   protected toggleItem(
     id: number,
     productType: 'azot' | 'accessor',
-    event: Event
+    quantity: number,
+    event: Event,
+    price_type_id?: number
   ): void {
-    const data = { id, productType, event };
+    const data = { id, productType, event, quantity, price_type_id };
     this.productToggle.emit(data);
   }
 

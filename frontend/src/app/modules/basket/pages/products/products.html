@@ -18,12 +18,12 @@
 				<div class="bg-[#2D2D30] py-[21px] px-[11px] rounded-[10px] orders">
 					<!-- Azots -->
 					<div class="order-item" *ngFor="let azot of getBasket.azots">
-						<app-product-card [selectItems]="selectedItems().azot" (productToggle)="onToggled($event)" class="w-full"
+						<app-product-card [selectItems]="selectedItems()" (productToggle)="onToggled($event)" class="w-full"
 							[product]="{product: azot, productType: 'azot'}"></app-product-card>
 					</div>
 					<div class="order-item" *ngFor="let accessor of getBasket.accessories">
-						<app-product-card [selectItems]="selectedItems().accessor" (productToggle)="onToggled($event)"
-							class="w-full" [product]="{product: accessor, productType: 'accessor'}"></app-product-card>
+						<app-product-card [selectItems]="selectedItems()" (productToggle)="onToggled($event)" class="w-full"
+							[product]="{product: accessor, productType: 'accessor'}"></app-product-card>
 					</div>
 				</div>
 				@let promocode = promocode$ | async;

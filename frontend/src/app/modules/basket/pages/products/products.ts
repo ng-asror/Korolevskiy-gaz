@@ -9,7 +9,15 @@ import {
   ViewChild,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { Basket, LayoutService, Order, Telegram } from '../../../../core';
+import {
+  Accessor,
+  Azot,
+  Basket,
+  ISelectedItems,
+  LayoutService,
+  Order,
+  Telegram,
+} from '../../../../core';
 import { ProductCard } from '../../components';
 import { NumberPipe } from '../../../../pipe';
 import { debounceTime, firstValueFrom, Subject, tap } from 'rxjs';
@@ -32,11 +40,17 @@ export class Products implements OnInit, AfterViewInit {
   private telegram = inject(Telegram);
   private basketService = inject(Basket);
   private orderService = inject(Order);
+  private azotService = inject(Azot);
+  private accessorService = inject(Accessor);
   private layoutService = inject(LayoutService);
   private inputSubject = new Subject<string>();
   protected localBasket = this.basketService.localBasket$;
   protected promocode$ = this.basketService.promocode$;
   protected updates$ = this.layoutService.updates$;
+  protected orderData: ISelectedItems = {
+    azot: [],
+    accessor: [],
+  };
   constructor(private router: Router) {
     this.inputSubject
       .pipe(
@@ -51,23 +65,25 @@ export class Products implements OnInit, AfterViewInit {
     this.localBasket.subscribe({
       next: (res) => {
         if (res) {
-          this.orderDataIds = {
-            azot: res.azots.map((item) => item.product.id),
-            accessor: res.accessories.map((item) => item.product.id),
-          };
+          const azots = res.azots.map((i) => ({
+            quantity: i.quantity,
+            id: i.product.id,
+            price_type_id: i.price_type_id,
+          }));
+          const accessor = res.accessories.map((i) => ({
+            quantity: i.quantity,
+            id: i.product.id,
+          }));
+          this.orderData = { azot: azots, accessor: accessor };
         }
       },
     });
   }
-  protected orderDataIds: { azot: number[]; accessor: number[] } = {
-    azot: [],
-    accessor: [],
-  };
 
   protected inputVal: string = '';
   @ViewChild('allChecked') selectorAllCheked!: ElementRef;
   allChecked: boolean = false;
-  selectedItems = signal<{ azot: number[]; accessor: number[] }>({
+  selectedItems = signal<ISelectedItems>({
     azot: [],
     accessor: [],
   });
@@ -76,22 +92,25 @@ export class Products implements OnInit, AfterViewInit {
     id: number;
     productType: 'azot' | 'accessor';
     event: Event;
+    quantity: number;
+    price_type_id?: number;
   }): void {
     const isChecked = (event.event.target as HTMLInputElement).checked;
     if (isChecked) {
-      this.selectedItems()[event.productType].push(event.id);
+      this.selectedItems()[event.productType].push({
+        id: event.id,
+        quantity: event.quantity,
+        price_type_id: event.price_type_id,
+      });
     } else {
-      // this.selectedItems.set(
-      //   this.selectedItems().filter((v) => v !== event.id)
-      // );
       this.selectedItems.set({
         ...this.selectedItems(),
         [event.productType]: this.selectedItems()[event.productType].filter(
-          (v) => v !== event.id
+          (v) => v.id !== event.id
         ),
       });
     }
-    const allIds = [...this.orderDataIds.azot, ...this.orderDataIds.accessor];
+    const allIds = [...this.orderData.azot, ...this.orderData.accessor];
     this.allChecked =
       allIds.length ===
       this.selectedItems().accessor.length + this.selectedItems().azot.length;
@@ -100,8 +119,8 @@ export class Products implements OnInit, AfterViewInit {
   toggleAllChecked() {
     if (this.allChecked === true) {
       this.selectedItems.set({
-        accessor: this.orderDataIds.accessor,
-        azot: this.orderDataIds.azot,
+        accessor: this.orderData.accessor,
+        azot: this.orderData.azot,
       });
     } else {
       this.selectedItems.set({ accessor: [], azot: [] });
@@ -110,6 +129,25 @@ export class Products implements OnInit, AfterViewInit {
 
   async deleteProduct(): Promise<void> {
     const tg_id = (await this.telegram.getTgUser()).user.id.toString();
+    if (this.selectedItems().accessor.length !== 0) {
+      this.selectedItems().accessor.forEach(async (item) => {
+        await firstValueFrom(
+          this.accessorService.minus(tg_id, item.id, item.quantity)
+        );
+      });
+    }
+    if (this.selectedItems().azot.length !== 0) {
+      this.selectedItems().azot.forEach(async (item) => {
+        await firstValueFrom(
+          this.azotService.minus(
+            tg_id,
+            item.id,
+            item.price_type_id!,
+            item.quantity
+          )
+        );
+      });
+    }
   }
 
   protected async createOrder(): Promise<void> {

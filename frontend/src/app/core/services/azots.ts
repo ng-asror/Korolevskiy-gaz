@@ -64,13 +64,15 @@ export class Azot {
   minus(
     tg_id: string,
     product_id: number,
-    price_type_id: number
+    price_type_id: number,
+    quantity: number = 1
   ): Observable<any> {
     return this.http
       .post<any>(`${environment.url}/public/cart/minus/azot`, {
         tg_id,
-        price_type_id,
         product_id,
+        price_type_id,
+        quantity,
       })
       .pipe(
         tap((res) => {

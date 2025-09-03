@@ -35,12 +35,11 @@ export class Oformit implements OnInit {
   private orderService = inject(Order);
   private layoutService = inject(LayoutService);
   private telegram = inject(Telegram);
-
   protected decoration$ = this.basketService.decoration$;
-  allCount = this.basketService.decorationProductCount();
   slugIds = new Map<string, { name: string; price: number }>();
   oplata_type = signal<'Переводом' | 'Наличные'>('Наличные');
   slugPrice = signal<number>(0);
+  protected allCount = signal<number>(0);
   updates = this.layoutService.updates;
   orderInfo: FormGroup;
   constructor(private fb: NonNullableFormBuilder, private router: Router) {
@@ -49,6 +48,19 @@ export class Oformit implements OnInit {
       adress: this.fb.control('', { validators: Validators.required }),
       comment: this.fb.control(''),
       cargo_with: this.fb.control(false),
+    });
+    this.decoration$.subscribe((res) => {
+      if (res) {
+        const azotCount = res.azots.reduce(
+          (count, items) => count + items.count,
+          0
+        );
+        const accessorCount = res.accessories.reduce(
+          (count, items) => count + items.count,
+          0
+        );
+        this.allCount.set(accessorCount + azotCount);
+      }
     });
   }
 
@@ -115,6 +127,10 @@ export class Oformit implements OnInit {
           this.basketService.decorationNext(null);
           this.router.navigate(['/orders']);
         }
+      );
+    } else {
+      this.telegram.showAlert(
+        'Пожалуйста, введите ваш номер телефона и адрес.'
       );
     }
   }

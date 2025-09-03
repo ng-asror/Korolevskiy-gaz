@@ -1,9 +1,16 @@
 <ng-container *ngIf="productState() as product">
 	<div class="flex items-center gap-x-[15px] order-item">
 		<div class="relative">
-			<input type="checkbox" [checked]="isChecked(product.product_id)"
-				(change)="toggleItem(product.product.id, getProduct().productType, $event)"
-				class="absolute top-[-2px] border-2 w-[23px] h-[23px] left-[-2px] rounded-[5px] border-[2px] border-[#2D2D30]">
+			<ng-container *ngIf="'price_type' in product;else accessorCheckbox">
+				<input type="checkbox" [checked]="isChecked(product.product_id, 'azot')"
+					(change)="toggleItem(product.product.id, getProduct().productType, product.quantity, $event, product.price_type_id)"
+					class="absolute top-[-2px] border-2 w-[23px] h-[23px] left-[-2px] rounded-[5px] border-[2px] border-[#2D2D30]">
+			</ng-container>
+			<ng-template #accessorCheckbox>
+				<input type="checkbox" [checked]="isChecked(product.product_id, 'accessor')"
+					(change)="toggleItem(product.product.id, getProduct().productType, product.quantity, $event)"
+					class="absolute top-[-2px] border-2 w-[23px] h-[23px] left-[-2px] rounded-[5px] border-[2px] border-[#2D2D30]">
+			</ng-template>
 			<div class="bg-white rounded-[10px] overflow-hidden flex justify-center w-[110px] h-[96px]">
 				<img [src]="product.product.image_url" [alt]="product.name" class="block w-full h-[100%]"
 					[ngClass]="getProduct().productType === 'azot'? 'object-cover object-top':'object-contain object-center'">
