@@ -111,11 +111,14 @@ export class ProductCard {
     quantity: number,
     product_type_id?: number
   ): Promise<void> {
+    console.log(quantity);
     const tg_id = (await this.telegram.getTgUser()).user.id.toString();
     if (this.getProduct().productType === 'accessor') {
       await firstValueFrom(this.accessorService.minus(tg_id, id, quantity));
     } else {
-      await firstValueFrom(this.azotService.minus(tg_id, id, product_type_id!));
+      await firstValueFrom(
+        this.azotService.minus(tg_id, id, product_type_id!, quantity)
+      );
     }
   }
 }

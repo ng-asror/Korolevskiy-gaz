@@ -40,8 +40,10 @@ export class Accessor {
   minus(
     tg_id: string,
     product_id: number,
-    quantity?: number
+    quantity: number = 1
   ): Observable<IBasket> {
+    console.log(quantity);
+
     return this.http
       .post<IBasket>(`${environment.url}/public/cart/minus/accessuary`, {
         tg_id,
