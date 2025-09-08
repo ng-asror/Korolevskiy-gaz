@@ -1,9 +1,9 @@
-<div class="bg-[#2D2D30] py-[21px] px-[11px] rounded-[10px]" *ngIf="orderInp() as order"
+<div class="bg-[#27A34C] py-[21px] px-[11px] rounded-[10px]" *ngIf="orderInp() as order"
 	[ngClass]="order.status === 'new'? 'cursor-pointer': ''">
-	<div class="border-b-1 border-[#696969] pb-[15px] mb-[15px]">
+	<div class="border-b-1 border-[#403681] pb-[15px] mb-[15px]">
 		<div class="flex items-end gap-x-[10px]">
 			<h1 class="text-white text-[18px] font-bold">Заказ №{{order.order_number}}</h1>
-			<p class="text-[#9B9B9B]">от {{order.created_at | date: 'dd.mm.yyyy'}}</p>
+			<p class="text-[#09FC09]">от {{order.created_at | date: 'dd.mm.yyyy'}}</p>
 		</div>
 		<h4 class="leading-[100%] font-[500] text-[14px] text-[#DC1F1F]" [style.color]="STATUS_MAP[order.status].color">
 			{{order.status_text}}</h4>
@@ -16,13 +16,13 @@
 			<app-product-card [product]="{product:item, productType: 'azot'}"></app-product-card>
 		</div>
 	</div>
-	<div class="flex items-center justify-between border-t-1 border-[#696969] pt-[15px] mt-[15px]">
-		<p class="text-[#B9B9B9] font-[400] text-[14px]">Кол-во товаров:
+	<div class="flex items-center justify-between border-t-1 border-[#403681] pt-[15px] mt-[15px]">
+		<p class="text-[#09FC09] font-[400] text-[14px]">Кол-во товаров:
 			<span class="text-white font-[700]">{{order_count()}}</span>
 		</p>
-		<p class="text-[#B9B9B9] font-[400] text-[14px]">Сумма: <span class="text-white font-[700]">{{order.total_price|
+		<p class="text-[#09FC09] font-[400] text-[14px]">Сумма: <span class="text-white font-[700]">{{order.total_price|
 				uzPrice}}
-				₽</span> <del class="ml-2 text-white/50 font-normal text-sm italic" *ngIf="order.promocode">
+				₽</span> <del class="ml-2 text-white font-normal text-sm italic" *ngIf="order.promocode">
 				{{order.all_price | uzPrice}}₽
 			</del></p>
 	</div>

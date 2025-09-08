@@ -4,12 +4,12 @@
 			<ng-container *ngIf="'price_type' in product;else accessorCheckbox">
 				<input type="checkbox" [checked]="isChecked(product.product_id, 'azot')"
 					(change)="toggleItem(product.product.id, getProduct().productType, product.quantity, $event, product.price_type_id)"
-					class="absolute top-[-2px] border-2 w-[23px] h-[23px] left-[-2px] rounded-[5px] border-[2px] border-[#2D2D30]">
+					class="absolute top-[-2px] border-2 w-[23px] h-[23px] left-[-2px] rounded-[5px] border-[2px] border-[#27A34C]">
 			</ng-container>
 			<ng-template #accessorCheckbox>
 				<input type="checkbox" [checked]="isChecked(product.product_id, 'accessor')"
 					(change)="toggleItem(product.product.id, getProduct().productType, product.quantity, $event)"
-					class="absolute top-[-2px] border-2 w-[23px] h-[23px] left-[-2px] rounded-[5px] border-[2px] border-[#2D2D30]">
+					class="absolute top-[-2px] border-2 w-[23px] h-[23px] left-[-2px] rounded-[5px] border-[2px] border-[#27A34C]">
 			</ng-template>
 			<div class="bg-white rounded-[10px] overflow-hidden flex justify-center w-[110px] h-[96px]">
 				<img [src]="product.product.image_url" [alt]="product.name" class="block w-full h-[100%]"
@@ -17,7 +17,7 @@
 			</div>
 		</div>
 		<div class="w-full">
-			<span class="text-[12px] opacity-50 text-white" *ngIf="'price_type' in product">{{product.price_type}}, {{
+			<span class="text-[12px] opacity-90 text-white" *ngIf="'price_type' in product">{{product.price_type}}, {{
 				product.product.type}}</span>
 			<h3 class="text-[14px] font-medium text-white">{{product.name}}</h3>
 			<h1 class="text-[18px] font-medium text-white">{{product.price | uzPrice}}₽</h1>

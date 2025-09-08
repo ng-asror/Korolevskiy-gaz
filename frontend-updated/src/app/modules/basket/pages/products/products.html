@@ -3,7 +3,7 @@
 		<h3 class="text-white text-[24px] leading-[normal] text-center mb-[25px] font-[700]">Корзина</h3>
 		<section id="content" class="relative">
 			<div class="grid grid-cols-1 gap-y-[4px] mb-[46px]">
-				<div class="flex items-center justify-between bg-[#2D2D30] py-[14px] px-[11px] rounded-[10px]">
+				<div class="flex items-center justify-between bg-[#27A34C] py-[14px] px-[11px] rounded-[10px]">
 					<div class="flex items-center gap-x-[10px] cursor-pointer">
 						<input type="checkbox" [value]="allChecked" id="allChecked"
 							class="w-[20px] cursor-pointer h-[20px] rounded-[2px]" [(ngModel)]="allChecked"
@@ -15,7 +15,7 @@
 						<p class="text-[16px] cursor-pointer font-normal text-[#FF6161]">Удалить выбранное</p>
 					</div>
 				</div>
-				<div class="bg-[#2D2D30] py-[21px] px-[11px] rounded-[10px] orders">
+				<div class="bg-[#27A34C] py-[21px] px-[11px] rounded-[10px] orders">
 					<!-- Azots -->
 					<div class="order-item" *ngFor="let azot of getBasket.azots">
 						<app-product-card [selectItems]="selectedItems()" (productToggle)="onToggled($event)" class="w-full"
@@ -28,7 +28,7 @@
 				</div>
 				@let promocode = promocode$ | async;
 				<ng-container *ngIf="updates$ | async as updates">
-					<div class="bg-[#2D2D30] py-[21px] px-[11px] rounded-[10px]" *ngIf="updates.data.enable_promocode !== 0">
+					<div class="bg-[#27A34C] py-[21px] px-[11px] rounded-[10px]" *ngIf="updates.data.enable_promocode !== 0">
 						<h1 class="text-[18px] text-white font-medium mb-[6px]">Промокод</h1>
 						<div class="rounded-[5px] bg-[#191919] grid grid-cols-[1fr_auto] gap-x-[4px] pr-[15px]">
 							<input type="text" #promoInpEl [value]="promocode? promocode.promocode : ''"
@@ -40,30 +40,30 @@
 						</div>
 					</div>
 				</ng-container>
-				<div class="bg-[#2D2D30] py-[21px] px-[11px] rounded-[10px]">
+				<div class="bg-[#27A34C] py-[21px] px-[11px] rounded-[10px]">
 					<h1 class="text-[18px] text-white font-medium mb-[6px]">Итого:</h1>
-					<p class="text-white/50 text-[14px] font-normal mb-[5px]">Кол-во товаров: <span
+					<p class="text-white text-[14px] font-normal mb-[5px]">Кол-во товаров: <span
 							class="text-white">{{getBasket.total_count | uzPrice}}</span>
 					</p>
 					<ng-container *ngIf="updates$ | async as updates">
-						<p class="text-white/50 text-[16px] font-normal" *ngIf="updates.data.enable_promocode !==0">
+						<p class="text-white text-[16px] font-normal" *ngIf="updates.data.enable_promocode !==0">
 							Скидка:
 							<span class="text-white">{{(promocode? promocode.amount: 0) | uzPrice}}₽</span>
 						</p>
 					</ng-container>
 
-					<h2 class="text-white/50 text-[16px] font-bold mt-[10px] pt-[10px] border-t border-[#696969]">
+					<h2 class="text-white text-[16px] font-bold mt-[10px] pt-[10px] border-t border-[#403681]">
 						Сумма:
 						<span class="text-white">
 							{{(promocode? getBasket.total_price - promocode.amount: getBasket.total_price )| uzPrice}}₽
 						</span>
-						<del class="ml-2 text-white/50 font-normal text-sm italic" *ngIf="promocode">
+						<del class="ml-2 text-white font-normal text-sm italic" *ngIf="promocode">
 							{{getBasket.total_price | uzPrice}}₽
 						</del>
 					</h2>
 				</div>
 			</div>
-			<div class="w-full px-[10px] fixed left-0 right-0 bottom-[75px] max-w-[768px] mx-auto">
+			<div class="w-full px-[10px] fixed left-0 right-0 bottom-[90px] max-w-[768px] mx-auto">
 				<button type="button" (click)="createOrder()"
 					class="block w-full cursor-pointer text-black h-[46px] bg-gradient flex items-center justify-center rounded-[5px] text-[16px] font-medium">
 					Перейти к оформлению заказа</button>
@@ -76,7 +76,7 @@
 		style="top: 50%; left: 50%; transform: translate(-50%, -50%);">
 		<img src="svg/empty.svg" alt="empty" class="block w-full max-w-[70%]">
 		<p class="text-[16px] leading-4 text-white font-bold mt-5">В корзине пусто</p>
-		<p class="text-[14px] leading-4 text-[#757575] text-center font-medium mt-3">Добавляйте сюда любимые товары<br>и
+		<p class="text-[14px] leading-4 text-[#cecece] text-center font-medium mt-3">Добавляйте сюда любимые товары<br>и
 			заказывайте их всего в пару кликов</p>
 		<a class="flex items-center justify-center gap-2 w-3/4 bg-gradient text-black text-center rounded-lg py-2.5 mt-10"
 			routerLink="/">
