@@ -1,0 +1,41 @@
+<ng-container *ngIf="azotInfo()?.data as azot">
+	<div class="bg-black/75 rounded-[10px] overflow-hidden mt-[20px]">
+		<div class="bg-[#E9E4E0] w-full min-h-[373px] rounded-[10px] flex gap-x-[10px] overflow-hidden pr-[10px]">
+			<div class="py-[43px_30px] pl-[20px] w-full grid grid-rows-[auto_auto] content-between">
+				<div>
+					<h1 class="text-black text-[20px] font-[500] mb-[5px]">{{azot.title}}</h1>
+					<button type="button" (click)="descToggle()"
+						class="cursor-pointer bg-gradient p-[5px_15px] text-black rounded-[5px] text-[14px] leading-[100%]">
+						Подробнее о товаре</button>
+				</div>
+				<div class="grid grid-cols-3 gap-[10px]">
+					<div *ngFor="let item of azot.price_types">
+						<p class="leading-[100%] text-[#8A8A8A] text-[14px] mb-[5px]">{{item.name}}</p>
+						<h1 class="text-[16px] font-[500] leading-[100%]">{{item.price | uzPrice}}₽</h1>
+					</div>
+				</div>
+			</div>
+			<div class="w-[95px] shrink-[0] bg-red h-full">
+				<img [src]="azot.image_url" [alt]="azot.title" class="block object-cover object-bottom aspect-[43/196]">
+			</div>
+		</div>
+		<div class="transition-all h-[0] px-[10px] overflow-hidden" [ngClass]="{'pb-[30px] py-[10px] h-auto': desc()}">
+			<button type="button" class="cursor-pointer block rounded-full ml-auto" (click)="descToggle()">
+				<img src="svg/close.svg" alt="close icon" width="25" height="25">
+			</button>
+			<b class="text-[16px] leading-[100%] mb-[5px] block text-white font-[600]">О товаре</b>
+			<p class="font-light text-[#B9B9B9] leading-[120%]">Веселящий газ, или закись азота N2O в баллоне - это
+				развлечение,
+				позволяющее
+				отлично
+				расслабиться, посмеяться в
+				кругу друзей и даже немного подурачиться, при этом без алкоголя и запрещенных веществ.</p>
+			<b class="text-[16px] leading-[100%] my-[10px_5px] block text-white font-[600]">Страна производитель</b>
+			<p class="font-light text-[#B9B9B9] leading-[120%]">Россия, Череповец</p>
+			<div class="flex gap-x-[7px] items-center mt-[12px]">
+				<b class="txt-liner text-[16px] font-[600]">Товар сертифицирован</b>
+				<img src="svg/check.svg" alt="check icon" width="20" height="20">
+			</div>
+		</div>
+	</div>
+</ng-container>

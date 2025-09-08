@@ -1,0 +1,30 @@
+.container {
+  max-width: 768px;
+  margin-inline: auto;
+  padding-inline: 10px;
+}
+
+main {
+  overflow: hidden;
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  grid-template-rows: auto 1fr auto;
+  align-content: center;
+}
+
+.content {
+  overflow-y: scroll;
+  padding-bottom: 12px;
+}
+
+.modal-phone {
+  height: 100vh;
+  bottom: 0;
+}
+
+.modal {
+  width: calc(100% - 24px * 2);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}

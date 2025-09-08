@@ -1,0 +1,80 @@
+<main class="w-full h-screen">
+	<div class="flex items-center justify-between container relative py-[10px]" *ngIf="updates.value() as updates">
+		<a routerLink="/catalog" class="block">
+			<img [src]="updates.data.site_logo" alt="logo icon" width="81" height="44" class="block">
+		</a>
+		<a routerLink="/catalog"
+			class="text-[24px] absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 font-bold txt-liner">{{updates.data.site_title}}</a>
+		<div></div>
+	</div>
+	<div class="content px-[10px]">
+		<router-outlet></router-outlet>
+	</div>
+	<section id="menubar" class="flex items-stretch w-full gap-x-[1px]">
+		<a (click)="soft()" routerLink="/catalog" routerLinkActive="bg-gradient"
+			class="flex-1 py-[10px] items-center bg-[#E9E4E0] rounded-tl-[15px] flex items-center justify-around flex-col gap-y-[2px]">
+			<img src="svg/water.svg" alt="water svg" width="13.549" height="23.227" />
+			<span class="text-[16px] font-normal text-black">Каталог</span>
+		</a>
+		<a (click)="soft()" routerLink="/basket" routerLinkActive="bg-gradient"
+			class="bg-[#E9E4E0] flex-1 py-[10px] items-center flex items-center justify-around relative flex-col gap-y-[2px]">
+			<img src="svg/basket.svg" alt="basket svg" width="21" height="21" />
+			<ng-container *ngIf="basket | async as getBasket">
+				<span *ngIf="getBasket.total_count !== 0"
+					class="absolute text-white p-[4px] bg-[red] top-[5px] right-[5px] text-[10px] rounded">{{getBasket.total_count
+					| uzPrice}}</span>
+			</ng-container>
+			<span class="text-[16px] font-normal text-black">Корзина</span>
+		</a>
+		<a (click)="soft()" routerLink="/orders" routerLinkActive="bg-gradient"
+			class="bg-[#E9E4E0] flex-1 py-[10px] items-center flex items-center justify-around flex-col gap-y-[2px]">
+			<img src="svg/order.svg" alt="water svg" width="21" height="21" />
+			<span class="text-[16px] font-normal text-black">Заказы</span>
+		</a>
+		<button type="button" [ngClass]="callModal().modal_bg ? 'bg-gradient' : ''"
+			(click)="callModal.set({modal_bg: true, modal_success: false, phone_number: true,sps: false }); soft();"
+			class="bg-[#E9E4E0] flex-1 py-[10px] items-center flex items-center cursor-pointer justify-around leading-[120%] rounded-tr-[15px] flex-col gap-y-[2px]">
+			<img src="svg/phone-layout.svg" alt="water svg" width="22" height="22" />
+			<span class="text-[16px] font-normal text-black">Обратный звонок</span>
+		</button>
+	</section>
+</main>
+
+<div class="backdrop-blur-xs w-full h-full px-[24px] fixed z-2 bg-[#1919194D] modal-phone" *ngIf="callModal().modal_bg"
+	(click)="callModal.set({ modal_success: false, modal_bg: false, phone_number: false, sps: false })">
+</div>
+<div class="bg-[#E9E4E0] p-[20px] fixed z-3 rounded-[10px] modal max-w-[450px] mx-auto"
+	*ngIf="callModal().phone_number">
+	<button type="button" class="absolute top-[10px] right-[10px]"
+		(click)="callModal.set({modal_success: false, modal_bg: false, phone_number: false, sps: false})">
+		<img src="svg/close-modal.svg" alt="close modal icon" width="25" height="25">
+	</button>
+	<h1 class="text-[15px] font-[700] text-black text-center max-w-[218px] mx-[auto]">Оставьте свои контактные данные
+		для связи</h1>
+	<input type="text" [inputMask]="phoneMask" placeholder="+7 (___) ___-____" [(ngModel)]="phone"
+		class="bg-[#D5D0CC] rounded-[5px] w-full h-[40px] px-[10px] text-black text-center outline-none mb-[40px] mt-[30px]">
+	<button type="button" (click)="sendPhoneNum()"
+		class="text-[12px] font-[500] text-black w-full max-w-[148px] p-[10px] cursor-pointer text-center bg-gradient rounded-[5px] mx-[auto] block">
+		Отправить
+	</button>
+</div>
+<div class="bg-[#E9E4E0] p-[20px] fixed z-3 rounded-[10px] modal max-w-[450px] mx-auto"
+	*ngIf="callModal().modal_success">
+	<img src="svg/check-big.svg" alt="check bg" class="w-[70px] h-[70px] mx-[auto] block">
+	<h1 class="text-[15px] font-[700] text-black text-center max-w-[218px] mx-[auto] mt-[15px] mb-[40px]">Наш менеджер
+		свяжется с вами в ближайшее время</h1>
+	<button type="button" (click)="callModal.set({modal_success: false, modal_bg: true, phone_number: false, sps: true})"
+		class="text-[12px] font-[500] text-black w-full cursor-pointer max-w-[148px] p-[10px] text-center bg-gradient rounded-[5px] mx-[auto] block">
+		Закрыть
+	</button>
+</div>
+<div class="bg-[#E9E4E0] p-[20px] fixed z-3 rounded-[10px] modal max-w-[450px] mx-auto" *ngIf="callModal().sps">
+	<img src="svg/check-big.svg" alt="check bg" class="w-[70px] h-[70px] mx-[auto] block">
+	<h1 class="text-[15px] font-[700] text-black text-center max-w-[218px] mx-[auto] mt-[15px] mb-[40px]">СПАСИБО ЗА
+		ЗАКАЗ!</h1>
+	<button type="button"
+		(click)="callModal.set({modal_success: false, modal_bg: false, phone_number: false, sps: false})"
+		class="text-[12px] font-[500] text-black w-full max-w-[148px] p-[10px] text-center cursor-pointer bg-gradient rounded-[5px] mx-[auto] block">
+		Закрыть
+	</button>
+</div>
