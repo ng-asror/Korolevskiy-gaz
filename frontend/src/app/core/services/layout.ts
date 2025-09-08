@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, resource } from '@angular/core';
 import { BehaviorSubject, firstValueFrom, Observable, tap } from 'rxjs';
-import { IUpdates } from '../interfaces';
+import { ICallbackRes, IUpdates } from '../interfaces';
 import { environment } from '../../../environments/environment.development';
 
 @Injectable({
@@ -22,4 +22,11 @@ export class LayoutService {
   public updates = resource({
     loader: () => firstValueFrom(this.getUpdates()),
   });
+
+  callback(data: { tg_id: string; phone: string }): Observable<ICallbackRes> {
+    return this.http.post<ICallbackRes>(
+      `${environment.url}/public/callback-requests`,
+      data
+    );
+  }
 }

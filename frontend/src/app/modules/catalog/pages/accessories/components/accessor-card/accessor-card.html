@@ -1,11 +1,11 @@
 @let accessor = getAccessor();
 <div class="rounded-t-[10px] rounded-b-[5px] overflow-hidden w-full">
-	<div class="bg-white p-[10px] w-full">
-		<img [src]="accessor.image_url" [alt]="accessor.title" class="w-full h-auto block" loading="lazy">
+	<div class="bg-white p-[10px] w-full h-[130px]">
+		<img [src]="accessor.image_url" [alt]="accessor.title" class="w-full h-full object-contain block" loading="lazy">
 	</div>
 	<div class="bg-[#E9E4E0]">
-		<div class="p-[10px]">
-			<p class="text-[16px] text-black font-[500] leading-[120%]">{{accessor.title}}</p>
+		<div class="p-[10px] card-about">
+			<h3 class="text-[16px] text-black font-[500] leading-[120%]">{{accessor.title}}</h3>
 			<h4 class="text-[18px] font-[700]">{{accessor.price | uzPrice}}₽</h4>
 			<p class="text-[14px] text-black leading-[120%]">{{accessor.description}}</p>
 		</div>

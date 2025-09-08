@@ -45,7 +45,7 @@ export class Oformit implements OnInit {
   constructor(private fb: NonNullableFormBuilder, private router: Router) {
     this.orderInfo = this.fb.group({
       phone: this.fb.control('', { validators: Validators.required }),
-      adress: this.fb.control('', { validators: Validators.required }),
+      address: this.fb.control('', { validators: Validators.required }),
       comment: this.fb.control(''),
       cargo_with: this.fb.control(false),
     });
@@ -83,11 +83,11 @@ export class Oformit implements OnInit {
   }
   async ngOnInit(): Promise<void> {
     const phone = await this.telegram.getCloudStorage('phone');
-    const adress = await this.telegram.getCloudStorage('adress');
+    const address = await this.telegram.getCloudStorage('address');
 
     this.orderInfo.patchValue({
       phone: phone ?? null,
-      adress: adress ?? null,
+      address: address ?? null,
     });
   }
 
@@ -113,7 +113,10 @@ export class Oformit implements OnInit {
     if (this.orderInfo.valid) {
       const formValue = this.orderInfo.getRawValue();
       this.telegram.setCloudItem('phone', this.orderInfo.get('phone')?.value);
-      this.telegram.setCloudItem('adress', this.orderInfo.get('adress')?.value);
+      this.telegram.setCloudItem(
+        'address',
+        this.orderInfo.get('address')?.value
+      );
       const currentServices: number[] = Array.from(this.slugIds.keys()).map(
         (item) => Number(item)
       );

@@ -45,10 +45,12 @@
 					<p class="text-white/50 text-[14px] font-normal mb-[5px]">Кол-во товаров: <span
 							class="text-white">{{getBasket.total_count | uzPrice}}</span>
 					</p>
-					<p class="text-white/50 text-[16px] font-normal">
-						Скидка:
-						<span class="text-white">{{(promocode? promocode.amount: 0) | uzPrice}}₽</span>
-					</p>
+					<ng-container *ngIf="updates$ | async as updates">
+						<p class="text-white/50 text-[16px] font-normal" *ngIf="updates.data.enable_promocode !==0">
+							Скидка:
+							<span class="text-white">{{(promocode? promocode.amount: 0) | uzPrice}}₽</span>
+						</p>
+					</ng-container>
 
 					<h2 class="text-white/50 text-[16px] font-bold mt-[10px] pt-[10px] border-t border-[#696969]">
 						Сумма:

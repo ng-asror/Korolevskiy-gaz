@@ -22,7 +22,7 @@
 						|
 						uzPrice}}</span>
 				</p>
-				<p class="text-white/50 text-[16px] font-normal">
+				<p class="text-white/50 text-[16px] font-normal" *ngIf="updates.value()?.data?.enable_promocode !== 0">
 					Скидка:
 					<span class="text-white">{{(decoration.promo_price) | uzPrice}}₽</span>
 				</p>
@@ -53,13 +53,13 @@
 						<div class="bg-gradient flex items-center w-[35px] h-[35px] justify-center p-[5px] rounded-[5px]">
 							<img src="svg/home.svg" alt="phone svg" class="w-full h-full">
 						</div>
-						<input type="text" placeholder="Адрес доставка" required formControlName="adress"
+						<input type="text" placeholder="Адрес доставка" required formControlName="address"
 							class="h-[35px] flex-1 outline-none w-full text-white px-[11px] bg-[#191919] rounded-[5px] text-[14px] placeholder:text-[#9B9B9B]">
 					</div>
 					<label for="cargo" class="flex cursor-pointer items-center gap-x-[4px]" *ngIf="updates.value() as updates">
 						<input type="checkbox" id="cargo" formControlName="cargo_with"
 							(change)="cargo_with(updates.data.cargo_price, $event)"
-							class="w-[35px] h-[35px] big rounded-[5px] outline-none">
+							class="w-[35px] h-[35px] big rounded-[5px] outline-none cursor-pointer">
 						<div
 							class="h-[35px] flex-1 outline-none w-full px-[11px] bg-[#191919] rounded-[5px] text-[16px] flex items-center justify-between">
 							<p class="text-[14px] text-white">Подъем на этаж</p>
@@ -91,7 +91,8 @@
 					<label *ngFor="let item of services.data.data" [for]="item.id"
 						class="flex cursor-pointer items-center gap-x-[4px]"
 						(change)="slugCalc(item.id.toString(), item.name, item.price, $event)">
-						<input type="checkbox" [id]="item.id" class="w-[35px] h-[35px] big rounded-[5px] outline-none">
+						<input type="checkbox" [id]="item.id"
+							class="w-[35px] cursor-pointer h-[35px] big rounded-[5px] outline-none">
 						<div
 							class="h-[35px] flex-1 outline-none w-full px-[11px] bg-[#191919] rounded-[5px] text-[16px] flex items-center justify-between">
 							<p class="text-[14px] text-white">{{item.name}}</p>
