@@ -24,8 +24,6 @@ export type StatusKey =
   styleUrl: './order-card.scss',
 })
 export class OrderCard {
-  private telegram = inject(Telegram);
-  private ordersService = inject(Order);
   protected order_count = signal<number>(0);
   orderInp = input.required<IMyOrdersRes['data'][0]>({
     alias: 'order',
