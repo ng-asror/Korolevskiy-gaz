@@ -1,3 +1,3 @@
 export const environment = {
-  url: 'https://api-new.botpl.ru/api/v1',
+  url: 'https://api.tgbotbuyss.ru/api/v1',
 };
