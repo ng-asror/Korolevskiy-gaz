@@ -65,7 +65,7 @@ export class Azot {
     tg_id: string,
     product_id: number,
     price_type_id: number,
-    quantity: number = 1
+    quantity?: number
   ): Observable<any> {
     return this.http
       .post<any>(`${environment.url}/public/cart/minus/azot`, {

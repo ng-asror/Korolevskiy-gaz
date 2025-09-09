@@ -2,7 +2,7 @@
 	<div class="flex items-center gap-x-[15px] order-item">
 		<div class="relative">
 			<ng-container *ngIf="'price_type' in product;else accessorCheckbox">
-				<input type="checkbox" [checked]="isChecked(product.product_id, 'azot')"
+				<input type="checkbox" [checked]="isChecked(product.price_type_id, 'azot')"
 					(change)="toggleItem(product.product.id, getProduct().productType, product.quantity, $event, product.price_type_id)"
 					class="absolute top-[-2px] border-2 w-[23px] h-[23px] left-[-2px] rounded-[5px] border-[2px] border-[#2D2D30]">
 			</ng-container>

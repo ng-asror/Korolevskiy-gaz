@@ -30,6 +30,9 @@ export class Orders implements OnInit {
   }
 
   protected async deleteOrder(id: number): Promise<void> {
+    await firstValueFrom(this.basketService.decoration$).then((res) => {
+      if (res?.id === id) this.basketService.decorationNext(null);
+    });
     const tg_id = (await this.telegram.getTgUser()).user.id.toString();
     await firstValueFrom(this.ordersService.deleteOrder(tg_id, id)).then(() => {
       this.ordersService.deleteLocalOrder(id);

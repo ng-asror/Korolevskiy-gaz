@@ -10,9 +10,9 @@
 	<div class="content px-[10px]">
 		<router-outlet></router-outlet>
 	</div>
-	<section id="menubar" class="flex items-stretch w-full gap-x-[1px]">
+	<section id="menubar" class="flex items-stretch w-full rounded-t-[15px] overflow-hidden gap-x-[1px]">
 		<a (click)="soft()" routerLink="/catalog" routerLinkActive="bg-gradient"
-			class="flex-1 py-[10px] items-center bg-[#E9E4E0] rounded-tl-[15px] flex items-center justify-around flex-col gap-y-[2px]">
+			class="flex-1 py-[10px] items-center bg-[#E9E4E0] flex items-center justify-around flex-col gap-y-[2px]">
 			<img src="svg/water.svg" alt="water svg" width="13.549" height="23.227" />
 			<span class="text-[16px] font-normal text-black">Каталог</span>
 		</a>
@@ -31,12 +31,15 @@
 			<img src="svg/order.svg" alt="water svg" width="21" height="21" />
 			<span class="text-[16px] font-normal text-black">Заказы</span>
 		</a>
-		<button type="button" [ngClass]="callModal().modal_bg ? 'bg-gradient' : ''"
-			(click)="callModal.set({modal_bg: true, modal_success: false, phone_number: true,sps: false }); soft();"
-			class="bg-[#E9E4E0] flex-1 py-[10px] items-center flex items-center cursor-pointer justify-around leading-[120%] rounded-tr-[15px] flex-col gap-y-[2px]">
-			<img src="svg/phone-layout.svg" alt="water svg" width="22" height="22" />
-			<span class="text-[16px] font-normal text-black">Обратный звонок</span>
-		</button>
+		<ng-container *ngIf="updates.value() as updates">
+			<button type="button" [ngClass]="callModal().modal_bg ? 'bg-gradient' : ''"
+				*ngIf="updates.data.require_phone_on_order !== 0"
+				(click)="callModal.set({modal_bg: true, modal_success: false, phone_number: true,sps: false }); soft();"
+				class="bg-[#E9E4E0] flex-1 py-[10px] items-center flex items-center cursor-pointer justify-around leading-[120%] flex-col gap-y-[2px]">
+				<img src="svg/phone-layout.svg" alt="water svg" width="22" height="22" />
+				<span class="text-[16px] font-normal text-black">Обратный звонок</span>
+			</button>
+		</ng-container>
 	</section>
 </main>
 

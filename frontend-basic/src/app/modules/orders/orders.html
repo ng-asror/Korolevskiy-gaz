@@ -2,7 +2,7 @@
 	<ng-container *ngIf="orders.data.length !== 0; else noOrders">
 		<h3 class="text-white text-[24px] text-center mb-[25px] leading-[normal] font-[700]">Заказы</h3>
 		<section id="content">
-			<div class="grid grid-cols-1 gap-y-[4px] mb-[46px]">
+			<div class="grid grid-cols-1 gap-y-[4px] mb-[50px]">
 				<div class="relative" *ngFor="let item of orders.data">
 					<button type="button" class="ml-auto cursor-pointer absolute top-[10px] right-[11px]"
 						(click)="deleteOrder(item.id)">

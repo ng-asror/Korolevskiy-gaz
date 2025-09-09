@@ -115,7 +115,9 @@ export class ProductCard {
     if (this.getProduct().productType === 'accessor') {
       await firstValueFrom(this.accessorService.minus(tg_id, id, quantity));
     } else {
-      await firstValueFrom(this.azotService.minus(tg_id, id, product_type_id!));
+      await firstValueFrom(
+        this.azotService.minus(tg_id, id, product_type_id!, quantity)
+      );
     }
   }
 }
