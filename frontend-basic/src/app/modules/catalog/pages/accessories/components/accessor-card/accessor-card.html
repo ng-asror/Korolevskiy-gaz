@@ -9,24 +9,24 @@
 			<h4 class="text-[18px] font-[700]">{{accessor.price | uzPrice}}₽</h4>
 			<p class="text-[14px] text-black leading-[120%]">{{accessor.description}}</p>
 		</div>
-		<ng-container *ngIf="counterService.isCounted(accessor.uuid) as cont">
-			<button type="button" (click)="kupit(accessor.id)" *ngIf="!cont.counted; else counterBtns"
-				class="bg-gradient cursor-pointer w-full h-[40px] font-[500] gap-x-[5px] rounded-[5px] flex items-center justify-center">
-				<img src="svg/card-basket.svg" [alt]="accessor.title" width="19" height="19">
-				Купить
+		@if (counterService.isCounted(accessor.uuid); as cont) {
+		@if (!cont.counted) {
+		<button type="button" (click)="kupit(accessor.id)"
+			class="bg-gradient cursor-pointer w-full h-[40px] font-[500] gap-x-[5px] rounded-[5px] flex items-center justify-center">
+			<img src="svg/card-basket.svg" [alt]="accessor.title" width="19" height="19">
+			Купить
+		</button>
+		}@else {
+		<div
+			class="grid grid-cols-[40px_1fr_40px] items-center rounded-[5px] overflow-hidden bg-gradient w-full h-[40px] gap-x-[5px]">
+			<button type="button" class="flex items-center justify-center cursor-pointer h-full" (click)="minus(accessor.id)">
+				<img src="svg/minus.svg" alt="minus icon" width="15" height="15"></button>
+			<p class="block text-center"> {{cont.quantity | uzPrice}}</p>
+			<button type="button" class="flex items-center justify-center cursor-pointer" (click)="kupit(accessor.id)">
+				<img src="svg/plus.svg" alt="plus icon" width="15" height="15">
 			</button>
-			<ng-template #counterBtns>
-				<div
-					class="grid grid-cols-[40px_1fr_40px] items-center rounded-[5px] overflow-hidden bg-gradient w-full h-[40px] gap-x-[5px]">
-					<button type="button" class="flex items-center justify-center cursor-pointer h-full"
-						(click)="minus(accessor.id)">
-						<img src="svg/minus.svg" alt="minus icon" width="15" height="15"></button>
-					<p class="block text-center"> {{cont.quantity | uzPrice}}</p>
-					<button type="button" class="flex items-center justify-center cursor-pointer" (click)="kupit(accessor.id)">
-						<img src="svg/plus.svg" alt="plus icon" width="15" height="15">
-					</button>
-				</div>
-			</ng-template>
-		</ng-container>
+		</div>
+		}
+		}
 	</div>
 </div>

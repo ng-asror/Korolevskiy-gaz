@@ -1,12 +1,14 @@
 <main class="w-full h-screen">
-	<div class="flex items-center justify-between container relative py-[10px]" *ngIf="updates.value() as updates">
+	@if (updates.value(); as updates) {
+	<div class="flex items-center justify-between container relative py-[10px]">
 		<a routerLink="/catalog" class="block">
-			<img [src]="updates.data.site_logo" alt="logo icon" width="81" height="44" class="block">
+			<img [src]="updates.site_logo" alt="logo icon" width="81" height="44" class="block">
 		</a>
 		<a routerLink="/catalog"
-			class="text-[24px] absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 font-bold txt-liner">{{updates.data.site_title}}</a>
+			class="text-[24px] absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 font-bold txt-liner">{{updates.site_title}}</a>
 		<div></div>
 	</div>
+	}
 	<div class="content px-[10px]">
 		<router-outlet></router-outlet>
 	</div>
@@ -19,11 +21,14 @@
 		<a (click)="soft()" routerLink="/basket" routerLinkActive="bg-gradient"
 			class="bg-[#E9E4E0] flex-1 py-[10px] items-center flex items-center justify-around relative flex-col gap-y-[2px]">
 			<img src="svg/basket.svg" alt="basket svg" width="21" height="21" />
-			<ng-container *ngIf="basket | async as getBasket">
-				<span *ngIf="getBasket.total_count !== 0"
-					class="absolute text-white p-[4px] bg-[red] top-[5px] right-[5px] text-[10px] rounded">{{getBasket.total_count
-					| uzPrice}}</span>
-			</ng-container>
+			@let data = basket | async;
+			@if (data) {
+			@if (data.total_count !== 0) {
+			<span class="absolute text-white p-[4px] bg-[red] top-[5px] right-[5px] text-[10px] rounded">{{data.total_count |
+				uzPrice}}</span>
+			}
+			}
+
 			<span class="text-[16px] font-normal text-black">Корзина</span>
 		</a>
 		<a (click)="soft()" routerLink="/orders" routerLinkActive="bg-gradient"
@@ -31,23 +36,25 @@
 			<img src="svg/order.svg" alt="water svg" width="21" height="21" />
 			<span class="text-[16px] font-normal text-black">Заказы</span>
 		</a>
-		<ng-container *ngIf="updates.value() as updates">
-			<button type="button" [ngClass]="callModal().modal_bg ? 'bg-gradient' : ''"
-				*ngIf="updates.data.require_phone_on_order !== 0"
-				(click)="callModal.set({modal_bg: true, modal_success: false, phone_number: true,sps: false }); soft();"
-				class="bg-[#E9E4E0] flex-1 py-[10px] items-center flex items-center cursor-pointer justify-around leading-[120%] flex-col gap-y-[2px]">
-				<img src="svg/phone-layout.svg" alt="water svg" width="22" height="22" />
-				<span class="text-[16px] font-normal text-black">Обратный звонок</span>
-			</button>
-		</ng-container>
+		@let getUpdates = updates.value();
+		@if (getUpdates?.require_phone_on_order !== 0) {
+		<button type="button" [ngClass]="callModal().modal_bg ? 'bg-gradient' : ''"
+			(click)="callModal.set({modal_bg: true, modal_success: false, phone_number: true,sps: false }); soft();"
+			class="bg-[#E9E4E0] flex-1 py-[10px] items-center flex items-center cursor-pointer justify-around leading-[120%] flex-col gap-y-[2px]">
+			<img src="svg/phone-layout.svg" alt="water svg" width="22" height="22" />
+			<span class="text-[16px] font-normal text-black">Обратный звонок</span>
+		</button>
+		}
 	</section>
 </main>
 
-<div class="backdrop-blur-xs w-full h-full px-[24px] fixed z-2 bg-[#1919194D] modal-phone" *ngIf="callModal().modal_bg"
+@if (callModal().modal_bg) {
+<div class="backdrop-blur-xs w-full h-full px-[24px] fixed z-2 bg-[#1919194D] modal-phone"
 	(click)="callModal.set({ modal_success: false, modal_bg: false, phone_number: false, sps: false })">
 </div>
-<div class="bg-[#E9E4E0] p-[20px] fixed z-3 rounded-[10px] modal max-w-[450px] mx-auto"
-	*ngIf="callModal().phone_number">
+}
+@if (callModal().phone_number) {
+<div class="bg-[#E9E4E0] p-[20px] fixed z-3 rounded-[10px] modal max-w-[450px] mx-auto">
 	<button type="button" class="absolute top-[10px] right-[10px]"
 		(click)="callModal.set({modal_success: false, modal_bg: false, phone_number: false, sps: false})">
 		<img src="svg/close-modal.svg" alt="close modal icon" width="25" height="25">
@@ -61,8 +68,9 @@
 		Отправить
 	</button>
 </div>
-<div class="bg-[#E9E4E0] p-[20px] fixed z-3 rounded-[10px] modal max-w-[450px] mx-auto"
-	*ngIf="callModal().modal_success">
+}
+@if (callModal().modal_success) {
+<div class="bg-[#E9E4E0] p-[20px] fixed z-3 rounded-[10px] modal max-w-[450px] mx-auto">
 	<img src="svg/check-big.svg" alt="check bg" class="w-[70px] h-[70px] mx-[auto] block">
 	<h1 class="text-[15px] font-[700] text-black text-center max-w-[218px] mx-[auto] mt-[15px] mb-[40px]">Наш менеджер
 		свяжется с вами в ближайшее время</h1>
@@ -71,7 +79,9 @@
 		Закрыть
 	</button>
 </div>
-<div class="bg-[#E9E4E0] p-[20px] fixed z-3 rounded-[10px] modal max-w-[450px] mx-auto" *ngIf="callModal().sps">
+}
+@if (callModal().sps) {
+<div class="bg-[#E9E4E0] p-[20px] fixed z-3 rounded-[10px] modal max-w-[450px] mx-auto">
 	<img src="svg/check-big.svg" alt="check bg" class="w-[70px] h-[70px] mx-[auto] block">
 	<h1 class="text-[15px] font-[700] text-black text-center max-w-[218px] mx-[auto] mt-[15px] mb-[40px]">СПАСИБО ЗА
 		ЗАКАЗ!</h1>
@@ -81,3 +91,4 @@
 		Закрыть
 	</button>
 </div>
+}

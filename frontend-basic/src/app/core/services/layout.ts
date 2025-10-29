@@ -20,7 +20,7 @@ export class LayoutService {
   }
 
   public updates = resource({
-    loader: () => firstValueFrom(this.getUpdates()),
+    loader: () => firstValueFrom(this.getUpdates()).then((res) => res.data),
   });
 
   callback(data: { tg_id: string; phone: string }): Observable<ICallbackRes> {
