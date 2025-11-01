@@ -1,4 +1,4 @@
-import { DatePipe, NgClass, NgFor, NgIf } from '@angular/common';
+import { DatePipe, NgClass } from '@angular/common';
 import { Component, effect, inject, input, signal } from '@angular/core';
 import { NumberPipe } from '../../../../pipe';
 import { ProductCard } from '../product-card/product-card';
@@ -19,7 +19,7 @@ export type StatusKey =
 
 @Component({
   selector: 'app-order-card',
-  imports: [ProductCard, NumberPipe, NgFor, NgIf, DatePipe, NgClass],
+  imports: [ProductCard, NumberPipe, DatePipe, NgClass],
   templateUrl: './order-card.html',
   styleUrl: './order-card.scss',
 })

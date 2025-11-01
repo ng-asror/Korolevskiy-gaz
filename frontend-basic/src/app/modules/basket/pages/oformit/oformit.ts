@@ -1,6 +1,6 @@
 import { Component, inject, OnInit, resource, signal } from '@angular/core';
 import { Basket, LayoutService, Order, Telegram } from '../../../../core';
-import { CommonModule, DatePipe, NgClass } from '@angular/common';
+import { AsyncPipe, CommonModule, DatePipe, NgClass } from '@angular/common';
 import { OformitCard } from '../../components/oformit-card/oformit-card';
 import { NumberPipe } from '../../../../pipe';
 import { firstValueFrom } from 'rxjs';
@@ -18,11 +18,11 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-oformit',
   imports: [
+    AsyncPipe,
     CommonModule,
     FormsModule,
-    ReactiveFormsModule,
-    NgClass,
     OformitCard,
+    ReactiveFormsModule,
     DatePipe,
     NumberPipe,
     InputMaskModule,

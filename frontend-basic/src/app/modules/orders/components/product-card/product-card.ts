@@ -1,11 +1,11 @@
 import { Component, input } from '@angular/core';
 import { NumberPipe } from '../../../../pipe';
 import { IOrderAccessor, IOrderAzot } from '../../../../core/interfaces';
-import { NgClass, NgIf } from '@angular/common';
+import { NgClass } from '@angular/common';
 
 @Component({
   selector: 'app-product-card',
-  imports: [NumberPipe, NgIf, NgClass],
+  imports: [NumberPipe, NgClass],
   templateUrl: './product-card.html',
   styleUrl: './product-card.scss',
 })

@@ -1,12 +1,10 @@
 <main class="w-full h-screen">
 	@if (updates.value(); as updates) {
 	<div class="flex items-center justify-between container relative py-[10px]">
-		<a routerLink="/catalog" class="block">
+		<a routerLink="/catalog" class="flex items-center gap-x-[5px] text-[24px] font-bold txt-liner">
 			<img [src]="updates.site_logo" alt="logo icon" width="81" height="44" class="block">
+			{{updates.site_title}}
 		</a>
-		<a routerLink="/catalog"
-			class="text-[24px] absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 font-bold txt-liner">{{updates.site_title}}</a>
-		<div></div>
 	</div>
 	}
 	<div class="content px-[10px]">

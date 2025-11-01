@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, resource, signal } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { Basket, Telegram } from './core';
 import { Login } from './core/services/login';

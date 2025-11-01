@@ -1,5 +1,10 @@
 import { CommonModule, NgClass } from '@angular/common';
-import { ChangeDetectionStrategy, Component, input, signal } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  input,
+  signal,
+} from '@angular/core';
 import { IAzot } from '../../../../core/interfaces/azot';
 import { NumberPipe } from '../../../../pipe';
 
@@ -8,7 +13,7 @@ import { NumberPipe } from '../../../../pipe';
   imports: [NgClass, CommonModule, NumberPipe],
   templateUrl: './azot-block.html',
   styleUrl: './azot-block.scss',
-	changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AzotBlock {
   protected desc = signal<boolean>(false);

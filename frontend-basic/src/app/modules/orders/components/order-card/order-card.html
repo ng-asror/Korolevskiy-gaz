@@ -1,5 +1,5 @@
-<div class="bg-[#2D2D30] py-[21px] px-[11px] rounded-[10px]" *ngIf="orderInp() as order"
-	[ngClass]="order.status === 'new'? 'cursor-pointer': ''">
+@if(orderInp(); as order) {
+<div class="bg-[#2D2D30] py-[21px] px-[11px] rounded-[10px]" [ngClass]="order.status === 'new'? 'cursor-pointer': ''">
 	<div class="border-b-1 border-[#696969] pb-[15px] mb-[15px]">
 		<div class="flex items-end gap-x-[10px]">
 			<h1 class="text-white text-[18px] font-bold">Заказ №{{order.order_number}}</h1>
@@ -9,12 +9,24 @@
 			{{order.status_text}}</h4>
 	</div>
 	<div class="orders">
-		<div class="order-item" *ngFor="let item of order.accessories">
+		@for (item of order.accessories; track item.id) {
+		<div class="order-item">
+			@defer (on viewport) {
 			<app-product-card [product]="{product:item, productType: 'accessor'}"></app-product-card>
+			}@placeholder {
+			<p>загрузка...</p>
+			}
 		</div>
-		<div class="order-item" *ngFor="let item of order.azots">
+		}
+		@for (item of order.azots; track item.id) {
+		<div class="order-item">
+			@defer (on viewport) {
 			<app-product-card [product]="{product:item, productType: 'azot'}"></app-product-card>
+			}@placeholder {
+			<p>загрузка...</p>
+			}
 		</div>
+		}
 	</div>
 	<div class="flex items-center justify-between border-t-1 border-[#696969] pt-[15px] mt-[15px]">
 		<p class="text-[#B9B9B9] font-[400] text-[14px]">Кол-во товаров:
@@ -22,8 +34,11 @@
 		</p>
 		<p class="text-[#B9B9B9] font-[400] text-[14px]">Сумма: <span class="text-white font-[700]">{{order.total_price|
 				uzPrice}}
-				₽</span> <del class="ml-2 text-white/50 font-normal text-sm italic" *ngIf="order.promocode">
-				{{order.all_price | uzPrice}}₽
-			</del></p>
+				₽</span>
+			@if (order.promocode) {
+			<del class="ml-2 text-white/50 font-normal text-sm italic">{{order.all_price | uzPrice}}₽</del>
+			}
+		</p>
 	</div>
 </div>
+}

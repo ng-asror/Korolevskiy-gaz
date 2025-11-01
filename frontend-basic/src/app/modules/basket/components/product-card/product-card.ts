@@ -11,14 +11,14 @@ import {
   IBasketAzot,
   ISelectedItems,
 } from '../../../../core/interfaces';
-import { NgClass, NgIf } from '@angular/common';
+import { NgClass } from '@angular/common';
 import { Accessor, Telegram } from '../../../../core';
 import { Azot } from '../../../../core';
 import { firstValueFrom } from 'rxjs';
 import { NumberPipe } from '../../../../pipe';
 @Component({
   selector: 'app-product-card',
-  imports: [NgIf, NgClass, NumberPipe],
+  imports: [NgClass, NumberPipe],
   templateUrl: './product-card.html',
   styleUrl: './product-card.scss',
 })

@@ -4,20 +4,12 @@ import { firstValueFrom } from 'rxjs';
 import { Azot, Counter, Telegram } from '../../../../core';
 import { IAzot } from '../../../../core/interfaces/azot';
 import { AzotBlock } from '../../components';
-import { AsyncPipe, NgFor, NgIf } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { NumberPipe } from '../../../../pipe';
 
 @Component({
   selector: 'app-buyout',
-  imports: [
-    AzotBlock,
-    NgIf,
-    RouterLink,
-    NumberPipe,
-    NgFor,
-    AsyncPipe,
-    RouterLinkActive,
-  ],
+  imports: [AzotBlock, RouterLink, NumberPipe, AsyncPipe, RouterLinkActive],
   templateUrl: './buyout.html',
   styleUrl: './buyout.scss',
 })
@@ -26,7 +18,7 @@ export class Buyout {
   protected counter = inject(Counter);
   private telegram = inject(Telegram);
   constructor(private router: Router) {}
-  protected azotInfo = signal<IAzot | null>(null);
+  protected azotInfo = signal<IAzot['data'] | null>(null);
   protected liters$ = this.azotsService.liters.asObservable();
   tg_id: string = '';
   async ngOnInit(): Promise<void> {
@@ -40,7 +32,7 @@ export class Buyout {
   }
   protected async selectAzot(id: number): Promise<void> {
     await firstValueFrom(this.azotsService.getAzotInfo(id)).then((res) => {
-      this.azotInfo.set(res);
+      this.azotInfo.set(res.data);
     });
   }
 
