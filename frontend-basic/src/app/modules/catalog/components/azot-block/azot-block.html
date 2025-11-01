@@ -18,7 +18,8 @@
 			</div>
 		</div>
 		<div class="w-[95px] shrink-[0] bg-red h-full">
-			<img [src]="azot.image_url" [alt]="azot.title" class="block object-cover object-bottom aspect-[43/196]">
+			<img [src]="azot.image_url" [alt]="azot.title" fetchpriority="high"
+				class="block object-cover object-bottom aspect-[43/196]" referrerpolicy="origin-when-cross-origin">
 		</div>
 	</div>
 	<div class="transition-all h-[0] px-[10px] overflow-hidden" [ngClass]="{'pb-[30px] py-[10px] h-auto': desc()}">

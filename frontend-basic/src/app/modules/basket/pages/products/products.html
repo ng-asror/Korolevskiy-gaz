@@ -87,6 +87,19 @@
 			Перейти к оформлению заказа</button>
 	</div>
 </section>
+}@else {
+<div class="flex w-full flex-col items-center font-sans text-center fixed max-w-[768px] mx-auto"
+	style="top: 50%; left: 50%; transform: translate(-50%, -50%);">
+	<img src="svg/empty.svg" alt="empty" class="block w-full max-w-[70%]">
+	<p class="text-[16px] leading-4 text-white font-bold mt-5">В корзине пусто</p>
+	<p class="text-[14px] leading-4 text-[#757575] text-center font-medium mt-3">Добавляйте сюда любимые товары<br>и
+		заказывайте их всего в пару кликов</p>
+	<a class="flex items-center justify-center gap-2 w-3/4 bg-gradient text-black text-center rounded-lg py-2.5 mt-10"
+		routerLink="/">
+		<img src="svg/water.svg" alt="">
+		За покупками
+	</a>
+</div>
 }
 }@else {
 <div class="flex w-full flex-col items-center font-sans text-center fixed max-w-[768px] mx-auto"

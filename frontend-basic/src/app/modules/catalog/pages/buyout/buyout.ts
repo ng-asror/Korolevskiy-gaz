@@ -23,10 +23,14 @@ export class Buyout {
   tg_id: string = '';
   async ngOnInit(): Promise<void> {
     await firstValueFrom(this.azotsService.getAzots('Выкуп')).then((res) => {
-      this.router.navigate([], {
-        queryParams: { liter: res.data.data[0].id },
-      });
-      this.selectAzot(res.data.data[0].id);
+      if (res.data.data.length) {
+        const liter_id = res.data.data[0].id;
+        if (!liter_id) return;
+        this.router.navigate([], {
+          queryParams: { liter: liter_id },
+        });
+        this.selectAzot(liter_id);
+      }
     });
     this.tg_id = await this.telegram.getUserLocalId();
   }
