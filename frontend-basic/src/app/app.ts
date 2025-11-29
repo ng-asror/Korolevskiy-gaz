@@ -3,11 +3,10 @@ import { RouterOutlet } from '@angular/router';
 import { Basket, Telegram } from './core';
 import { Login } from './core/services/login';
 import { firstValueFrom } from 'rxjs';
-import { Roulette } from './components';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, Roulette],
+  imports: [RouterOutlet],
   templateUrl: './app.html',
   styleUrl: './app.scss',
 })
