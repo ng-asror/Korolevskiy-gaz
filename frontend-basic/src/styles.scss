@@ -1,9 +1,13 @@
 @import "tailwindcss";
+
 * {
-  &::-webkit-scrollbar {
-    display: none;
-  }
+  scrollbar-width: none;
   transition: ease-out all 0.3s;
+  -ms-overflow-style: none;
+}
+
+*::-webkit-scrollbar {
+  display: none; /* Chrome, Safari */
 }
 body {
   background-color: #0f0f12;
