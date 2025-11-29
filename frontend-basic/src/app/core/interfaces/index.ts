@@ -9,3 +9,4 @@ export * from './services';
 export * from './updates';
 export * from './select-items';
 export * from './callback';
+export * from './roulette';
