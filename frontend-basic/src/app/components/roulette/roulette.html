@@ -1,0 +1,30 @@
+@let piace = 10;
+@let block = 337;
+@let gifts = items.value();
+@if(gifts) {
+<div class="fixed z-20 bg-stone-900/70 inset-0 w-full p-[10px] h-screen content-center">
+	<div class="relative">
+		<div #wheel
+			class="relative mb-4 overflow-hidden w-full content-center max-w-[400px] mx-auto aspect-square ring-10 ring-white rounded-full bg-stone-900">
+			<div
+				class="w-10 h-10 bg-stone-900 ring-4 ring-stone-500/10 border relative z-2 border-5 border-white mx-auto rounded-full">
+			</div>
+			@for (item of gifts.slice(0,10); let i = $index; track $index) {
+			<div [class]="i%2===0? 'bg-[#fecc68]':'bg-stone-900'" [attr.data-index]="item.id"
+				class="absolute text-center inset-0 aspect-square w-full h-full pt-3"
+				[style]="{'transform': `rotate(${(i*(360 / 10))}deg)`,'clip-path': `polygon(50% 50%, ${(100-(block/piace))}% 0%, ${(block/piace)}% 0%)`}">
+				@if(item.accessory) {
+				<h5 class="sm:text-lg text-sm text-white mx-auto leading-[110%] w-1/4">{{item.accessory.title}}</h5>
+				}@else {
+				<h5 class="sm:text-lg text-sm text-white mx-auto leading-[110%] w-1/4">{{item.title}}</h5>
+				}
+			</div>
+			}
+		</div>
+		<div #tringle class="w-[20px] h-[20px] left-1/2 -translate-1/2 z-3 bg-white tringle absolute"></div>
+	</div>
+	<button (click)="spin()"
+		class="bg-gradient cursor-pointer w-full max-w-[400px] h-[40px] block font-[500] gap-x-[5px] rounded-[5px] mx-auto"
+		type="button">Spin</button>
+</div>
+}
