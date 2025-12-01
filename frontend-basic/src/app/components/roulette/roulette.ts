@@ -1,22 +1,39 @@
 import {
-  ChangeDetectorRef,
   Component,
   ElementRef,
   inject,
+  OnInit,
   resource,
+  signal,
   ViewChild,
 } from '@angular/core';
 import { gsap } from 'gsap';
-import { LayoutService } from '../../core';
+import { LayoutService, Telegram } from '../../core';
 import { firstValueFrom } from 'rxjs';
+import { AsyncPipe } from '@angular/common';
 
 @Component({
   selector: 'app-roulette',
   templateUrl: './roulette.html',
   styleUrls: ['./roulette.scss'],
+  imports: [AsyncPipe],
 })
-export class Roulette {
+export class Roulette implements OnInit {
   private layoutService = inject(LayoutService);
+  private telegram = inject(Telegram);
+
+  // VARIABLES
+  order_id!: number;
+  tg_id!: number;
+  protected can_spin$ = this.layoutService.canSpin$;
+
+  // SIGNALS
+  protected spin_btn = signal<boolean>(true);
+  protected prize = signal<{
+    title: string;
+    img: string;
+    desc: string | null;
+  } | null>(null);
 
   items = resource({
     loader: () =>
@@ -25,36 +42,61 @@ export class Roulette {
       ),
   });
 
-  // VARIABLES
-
   // VIEWCHILD
   @ViewChild('wheel') wheel!: ElementRef<HTMLDivElement>;
-  @ViewChild('tringle') tringle!: ElementRef<HTMLDivElement>;
+  @ViewChild('giftModal') giftModal!: ElementRef<HTMLDialogElement>;
 
-  protected spin(): void {
-    const duration = 5;
-    const extra_rotation = 360 * 5;
-    const random_stop = Math.abs(Math.random() * 360);
+  async ngOnInit(): Promise<void> {
+    this.tg_id = (await this.telegram.getTgUser()).user.id;
 
+    this.layoutService.canSpin$.subscribe((res) => {
+      if (!res.order_id) return;
+      this.order_id = res.order_id;
+    });
+
+    this.giftModal.nativeElement.showModal();
+  }
+
+  protected async spin_roulette(): Promise<void> {
+    const items = this.items.value()?.slice(0, 10);
+    if (!items) return;
+    const select_id = await this.spin();
+
+    const index = items.findIndex((i) => i.id === select_id);
+
+    if (index === -1) return;
+
+    const sector_angle = 360 / 10;
+    const stop_angle = 360 - index * sector_angle;
+    const rotate = 360 * 5 + stop_angle;
+    this.gsap_spin(rotate, 5);
+  }
+
+  private async spin(): Promise<number | null> {
+    if (!this.order_id && !this.tg_id) return null;
+    const res = await firstValueFrom(
+      this.layoutService.spin(this.order_id, String(this.tg_id))
+    );
+    const gift = res.data.prize;
+    this.prize.set({
+      title: gift.accessory ? gift.accessory.title : gift.title,
+      img: gift.accessory ? gift.accessory.image_url : gift.image_url,
+      desc: gift.description,
+    });
+    this.spin_btn.set(false);
+    return gift.id;
+  }
+
+  private gsap_spin(rotate: number, duration: number): void {
     gsap.to(this.wheel.nativeElement, {
-      rotate: extra_rotation + random_stop,
+      rotate,
       duration,
       ease: 'power3.out',
       onComplete: () => {
-        this.check_pointer();
+        this.layoutService.canSpinSubject.next({ spin: false });
+        this.telegram.hapticFeedback('soft');
+        this.giftModal.nativeElement.showModal();
       },
     });
-  }
-
-  check_pointer(): void {
-    const arrow = this.tringle.nativeElement;
-    const rect = arrow.getBoundingClientRect();
-    const centerX = rect.left + rect.width / 2;
-    const centerY = rect.top + rect.height / 2;
-    const el = document.elementFromPoint(centerX, centerY);
-    if (el) {
-      const data_index = el.getAttribute('data-index');
-      console.log(data_index);
-    }
   }
 }
