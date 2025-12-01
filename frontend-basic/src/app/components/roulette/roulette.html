@@ -1,16 +1,18 @@
 @let piace = 10;
 @let block = 337;
+@let gift = prize();
 @let gifts = items.value();
-@if(gifts) {
+@let can_spin = can_spin$ | async;
+@if(gifts && can_spin && can_spin.spin) {
 <div class="fixed z-20 bg-stone-900/70 inset-0 w-full p-[10px] h-screen content-center">
 	<div class="relative">
 		<div #wheel
-			class="relative mb-4 overflow-hidden w-full content-center max-w-[400px] mx-auto aspect-square ring-10 ring-white rounded-full bg-stone-900">
+			class="relative overflow-hidden w-full content-center max-w-[400px] mx-auto aspect-square ring-10 ring-white rounded-full bg-stone-900">
 			<div
 				class="w-10 h-10 bg-stone-900 ring-4 ring-stone-500/10 border relative z-2 border-5 border-white mx-auto rounded-full">
 			</div>
 			@for (item of gifts.slice(0,10); let i = $index; track $index) {
-			<div [class]="i%2===0? 'bg-[#fecc68]':'bg-stone-900'" [attr.data-index]="item.id"
+			<div [class]="i%2===0? 'bg-[#fecc68]':'bg-stone-900'" [attr.data-index]="i"
 				class="absolute text-center inset-0 aspect-square w-full h-full pt-3"
 				[style]="{'transform': `rotate(${(i*(360 / 10))}deg)`,'clip-path': `polygon(50% 50%, ${(100-(block/piace))}% 0%, ${(block/piace)}% 0%)`}">
 				@if(item.accessory) {
@@ -23,8 +25,28 @@
 		</div>
 		<div #tringle class="w-[20px] h-[20px] left-1/2 -translate-1/2 z-3 bg-white tringle absolute"></div>
 	</div>
-	<button (click)="spin()"
-		class="bg-gradient cursor-pointer w-full max-w-[400px] h-[40px] block font-[500] gap-x-[5px] rounded-[5px] mx-auto"
-		type="button">Spin</button>
+	<div class="mt-7 h-[40px]">
+		@if(spin_btn()) {
+		<button (click)="spin_roulette()"
+			class="bg-gradient cursor-pointer w-full max-w-[400px] h-[40px] block font-[500] rounded-[5px] mx-auto"
+			type="button">Крутится</button>
+		}
+	</div>
 </div>
+}
+@if(gift) {
+<dialog #giftModal
+	class="backdrop:bg-black/60 p-0 max-w-full rounded-0 bg-stone-900/20 rounded-2xl w-full h-dvh content-center shadow-xl">
+	<div class="w-full h-fit p-[15px] max-w-[400px] rounded-[12px] mx-auto bg-[#2D2D30]">
+		<img [src]="gift.img" [alt]="gift.title" fetchpriority="high" referrerpolicy="origin-when-cross-origin"
+			class="w-full h-fit mb-3 block object-contain object-center rounded-[12px] max-h-[300px]">
+		<h1 class="text-white text-[22px] mb-1 leading-[110%]">{{gift.title}}</h1>
+		@if(gift.desc) {
+		<p class="text-white text-[18px] leading-[110%]">{{gift.desc}}</p>
+		}
+		<button type="button"
+			class="bg-gradient cursor-pointer w-full mt-3 h-[40px] block font-[500] gap-x-[5px] rounded-[5px] mx-auto"
+			(click)="giftModal.close(); spin_btn.set(true)">Хорошо</button>
+	</div>
+</dialog>
 }
