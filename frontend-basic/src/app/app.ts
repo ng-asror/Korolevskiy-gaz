@@ -3,10 +3,11 @@ import { RouterOutlet } from '@angular/router';
 import { Basket, Telegram } from './core';
 import { Login } from './core/services/login';
 import { firstValueFrom } from 'rxjs';
+import { Roulette } from './components';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
+  imports: [RouterOutlet, Roulette],
   templateUrl: './app.html',
   styleUrl: './app.scss',
 })
@@ -15,6 +16,9 @@ export class App implements OnInit {
   private loginService = inject(Login);
   private basketService = inject(Basket);
 
+  // VARIABLES
+
+  // SIGNALS
   protected readonly title = signal('Королевский газ');
 
   async ngOnInit(): Promise<void> {
