@@ -69,7 +69,7 @@ export class Roulette implements OnInit {
     const sector_angle = 360 / 10;
     const stop_angle = 360 - index * sector_angle;
     const rotate = 360 * 5 + stop_angle;
-    this.gsap_spin(rotate, 5);
+    this.gsap_spin(rotate);
   }
 
   private async spin(): Promise<number | null> {
@@ -87,10 +87,10 @@ export class Roulette implements OnInit {
     return gift.id;
   }
 
-  private gsap_spin(rotate: number, duration: number): void {
+  private gsap_spin(rotate: number): void {
     gsap.to(this.wheel.nativeElement, {
       rotate,
-      duration,
+      duration: 5,
       ease: 'power3.out',
       onComplete: () => {
         this.layoutService.canSpinSubject.next({ spin: false });
