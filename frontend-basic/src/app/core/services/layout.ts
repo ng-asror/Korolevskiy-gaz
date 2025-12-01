@@ -1,7 +1,13 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, resource } from '@angular/core';
 import { BehaviorSubject, firstValueFrom, Observable, tap } from 'rxjs';
-import { ICallbackRes, IRouletteItemsRes, IUpdates } from '../interfaces';
+import {
+  ICallbackRes,
+  ICanSpin,
+  IRouletteItemsRes,
+  ISpinRes,
+  IUpdates,
+} from '../interfaces';
 import { environment } from '../../../environments/environment.development';
 
 @Injectable({
@@ -9,8 +15,18 @@ import { environment } from '../../../environments/environment.development';
 })
 export class LayoutService {
   constructor(private http: HttpClient) {}
+
+  // SUBJECTS
   private updatesSubject = new BehaviorSubject<IUpdates | null>(null);
+  public canSpinSubject = new BehaviorSubject<{
+    spin: boolean;
+    order_id?: number;
+  }>({ spin: false });
+
+  // OBSERVERS
+  canSpin$ = this.canSpinSubject.asObservable();
   updates$ = this.updatesSubject.asObservable();
+
   private getUpdates(): Observable<IUpdates> {
     return this.http.get<IUpdates>(`${environment.url}/public/updates`).pipe(
       tap((res) => {
@@ -36,10 +52,17 @@ export class LayoutService {
     );
   }
 
-  spin(order_id: number, tg_id: string): Observable<any> {
-    return this.http.post<any>(`${environment.url}/public/roulette/items`, {
+  spin(order_id: number, tg_id: string): Observable<ISpinRes> {
+    return this.http.post<ISpinRes>(`${environment.url}/public/roulette/spin`, {
       order_id,
       tg_id,
     });
+  }
+
+  can_spin(order_id: number, tg_id: string): Observable<ICanSpin> {
+    return this.http.post<ICanSpin>(
+      `${environment.url}/public/roulette/can-spin`,
+      { order_id, tg_id }
+    );
   }
 }
