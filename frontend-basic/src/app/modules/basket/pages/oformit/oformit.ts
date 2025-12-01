@@ -35,13 +35,19 @@ export class Oformit implements OnInit {
   private orderService = inject(Order);
   private layoutService = inject(LayoutService);
   private telegram = inject(Telegram);
+
+  // VARIABLES
   protected decoration$ = this.basketService.decoration$;
+  updates = this.layoutService.updates;
+  orderInfo: FormGroup;
+
   slugIds = new Map<string, { name: string; price: number }>();
+
+  // SIGNALS
   oplata_type = signal<'Переводом' | 'Наличные'>('Наличные');
   slugPrice = signal<number>(0);
   protected allCount = signal<number>(0);
-  updates = this.layoutService.updates;
-  orderInfo: FormGroup;
+
   constructor(private fb: NonNullableFormBuilder, private router: Router) {
     this.orderInfo = this.fb.group({
       phone: this.fb.control('', { validators: Validators.required }),
@@ -49,19 +55,7 @@ export class Oformit implements OnInit {
       comment: this.fb.control(''),
       cargo_with: this.fb.control(false),
     });
-    this.decoration$.subscribe((res) => {
-      if (res) {
-        const azotCount = res.azots.reduce(
-          (count, items) => count + items.count,
-          0
-        );
-        const accessorCount = res.accessories.reduce(
-          (count, items) => count + items.count,
-          0
-        );
-        this.allCount.set(accessorCount + azotCount);
-      }
-    });
+    this.decoration();
   }
 
   phoneMask = createMask({
@@ -112,11 +106,7 @@ export class Oformit implements OnInit {
   async oformit(id: number): Promise<void> {
     if (this.orderInfo.valid) {
       const formValue = this.orderInfo.getRawValue();
-      this.telegram.setCloudItem('phone', this.orderInfo.get('phone')?.value);
-      this.telegram.setCloudItem(
-        'address',
-        this.orderInfo.get('address')?.value
-      );
+
       const currentServices: number[] = Array.from(this.slugIds.keys()).map(
         (item) => Number(item)
       );
@@ -125,16 +115,54 @@ export class Oformit implements OnInit {
         payment_type: this.oplata_type(),
         service_ids: currentServices,
       };
-      await firstValueFrom(this.orderService.ofotmitFinish(id, data)).then(
-        () => {
-          this.basketService.decorationNext(null);
-          this.router.navigate(['/orders']);
-        }
-      );
+      await this.order_oformit(id, data);
+      this.set_storage(formValue.phone, formValue.address);
     } else {
       this.telegram.showAlert(
         'Пожалуйста, введите ваш номер телефона и адрес.'
       );
     }
+  }
+
+  private set_storage(phone: string, address: string): void {
+    this.telegram.setCloudItem('phone', phone);
+    this.telegram.setCloudItem('address', address);
+  }
+
+  private decoration(): void {
+    this.decoration$.subscribe((res) => {
+      if (res) {
+        const azotCount = res.azots.reduce(
+          (count, items) => count + items.count,
+          0
+        );
+        const accessorCount = res.accessories.reduce(
+          (count, items) => count + items.count,
+          0
+        );
+        this.allCount.set(accessorCount + azotCount);
+      }
+    });
+  }
+
+  private async order_oformit(
+    id: number,
+    data: IOrderFinishReq
+  ): Promise<void> {
+    const tg_id = (await this.telegram.getTgUser()).user.id;
+    await firstValueFrom(this.orderService.ofotmitFinish(id, data)).then(() => {
+      this.basketService.decorationNext(null);
+      this.router.navigate(['/orders']);
+    });
+    await firstValueFrom(this.layoutService.can_spin(id, String(tg_id))).then(
+      (res) => {
+        setTimeout(() => {
+          this.layoutService.canSpinSubject.next({
+            spin: res.can_spin,
+            order_id: id,
+          });
+        }, 1000);
+      }
+    );
   }
 }
