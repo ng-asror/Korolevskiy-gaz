@@ -5,9 +5,9 @@
 @let can_spin = can_spin$ | async;
 @if(gifts && can_spin && can_spin.spin) {
 <div class="fixed z-20 bg-stone-900/70 inset-0 w-full p-[10px] h-screen content-center">
-	<div class="relative">
+	<div class="relative p-[10px]">
 		<div #wheel
-			class="relative overflow-hidden w-full content-center max-w-[400px] mx-auto aspect-square ring-10 ring-white rounded-full bg-stone-900">
+			class="relative overflow-hidden w-full content-center max-w-[400px] mx-auto aspect-square border-10 rounded-full bg-stone-900">
 			<div
 				class="w-10 h-10 bg-stone-900 ring-4 ring-stone-500/10 border relative z-2 border-5 border-white mx-auto rounded-full">
 			</div>
