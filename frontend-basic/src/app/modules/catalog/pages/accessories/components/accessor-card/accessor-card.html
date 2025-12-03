@@ -1,7 +1,8 @@
 @let accessor = getAccessor();
 <div class="rounded-t-[10px] rounded-b-[5px] overflow-hidden w-full">
 	<div class="bg-white p-[10px] w-full h-[130px]">
-		<img [src]="accessor.image_url" [alt]="accessor.title" class="w-full h-full object-contain block" loading="lazy">
+		<img [src]="accessor.image_url" [alt]="accessor.title" class="w-full h-full object-contain block"
+			fetchpriority="high" referrerpolicy="origin-when-cross-origin">
 	</div>
 	<div class="bg-[#E9E4E0]">
 		<div class="p-[10px] card-about">
