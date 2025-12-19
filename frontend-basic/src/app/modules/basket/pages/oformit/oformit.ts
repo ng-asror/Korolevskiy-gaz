@@ -115,6 +115,7 @@ export class Oformit implements OnInit {
         payment_type: this.oplata_type(),
         service_ids: currentServices,
       };
+      console.log(data);
       await this.order_oformit(id, data);
       this.set_storage(formValue.phone, formValue.address);
     } else {
@@ -150,18 +151,38 @@ export class Oformit implements OnInit {
     data: IOrderFinishReq
   ): Promise<void> {
     const tg_id = (await this.telegram.getTgUser()).user.id;
-    await firstValueFrom(this.orderService.ofotmitFinish(id, data)).then(() => {
-      this.basketService.decorationNext(null);
-      this.router.navigate(['/orders']);
-    });
-    await firstValueFrom(this.layoutService.can_spin(id, String(tg_id))).then(
-      (res) => {
-        setTimeout(() => {
-          this.layoutService.canSpinSubject.next({
-            spin: res.can_spin,
-            order_id: id,
-          });
-        }, 1000);
+    await firstValueFrom(this.orderService.ofotmitFinish(id, data)).then(
+      async (res) => {
+        console.log(res);
+        this.basketService.decorationNext(null);
+        this.router.navigate(['/orders']);
+        const azots = res.data.azots;
+        const accessories = res.data.accessories;
+        if (azots) {
+          if (azots && azots.length > 0) {
+            const hasBallon = azots.length > 0;
+            const hasArenda = azots.some((i) => i.azot?.type === 'Аренда');
+            const hasVikup = azots.some((i) => i.price_type_name === 'Выкуп');
+            const isSingleBallon = azots.length === 1 && azots[0].count === 1;
+            const hasAccessories = accessories && accessories.length > 0;
+            const isArendaWithVikup = hasArenda && hasVikup;
+            const singleBallonWithAccessory = isSingleBallon && hasAccessories;
+            const canShowSpinner =
+              !isArendaWithVikup &&
+              (singleBallonWithAccessory || (!isSingleBallon && hasBallon));
+            if (canShowSpinner) {
+              const res = await firstValueFrom(
+                this.layoutService.can_spin(id, String(tg_id))
+              );
+              setTimeout(() => {
+                this.layoutService.canSpinSubject.next({
+                  spin: res.can_spin,
+                  order_id: id,
+                });
+              }, 1000);
+            }
+          }
+        }
       }
     );
   }
