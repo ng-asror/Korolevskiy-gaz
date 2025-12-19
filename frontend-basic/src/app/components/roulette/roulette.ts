@@ -26,7 +26,8 @@ export class Roulette implements OnInit {
   order_id!: number;
   tg_id!: number;
   protected can_spin$ = this.layoutService.canSpin$;
-
+  protected can_spin_order$ =
+    this.layoutService.canSpinOrderSubject.asObservable();
   // SIGNALS
   protected spin_btn = signal<boolean>(true);
   protected prize = signal<{
@@ -47,6 +48,7 @@ export class Roulette implements OnInit {
   @ViewChild('giftModal') giftModal!: ElementRef<HTMLDialogElement>;
 
   async ngOnInit(): Promise<void> {
+    this.can_spin_order$.subscribe((res) => console.log(res));
     this.tg_id = (await this.telegram.getTgUser()).user.id;
 
     this.layoutService.canSpin$.subscribe((res) => {
@@ -91,6 +93,7 @@ export class Roulette implements OnInit {
     gsap.to(this.wheel.nativeElement, {
       rotate,
       duration: 5,
+      overwrite: 'auto',
       ease: 'power3.out',
       onComplete: () => {
         this.layoutService.canSpinSubject.next({ spin: false });
