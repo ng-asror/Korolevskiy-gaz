@@ -6,6 +6,7 @@ import {
   IMyOrdersRes,
   IOrderCreateRes,
   IOrderFinishReq,
+  IOrderFinishRes,
   IServices,
 } from '../interfaces';
 
@@ -53,8 +54,11 @@ export class Order {
       );
   }
 
-  ofotmitFinish(id: number, data: IOrderFinishReq): Observable<any> {
-    return this.http.post<any>(
+  ofotmitFinish(
+    id: number,
+    data: IOrderFinishReq
+  ): Observable<IOrderFinishRes> {
+    return this.http.post<IOrderFinishRes>(
       `${environment.url}/public/orders/${id}/finish`,
       data
     );
