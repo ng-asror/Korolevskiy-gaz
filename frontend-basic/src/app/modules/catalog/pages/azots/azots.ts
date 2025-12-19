@@ -8,59 +8,55 @@ import { Azot, Counter, Telegram } from '../../../../core';
 import { NumberPipe } from '../../../../pipe';
 
 @Component({
-	selector: 'app-azots',
-	imports: [
-		AzotBlock,
-		RouterLink,
-		AsyncPipe,
-		RouterLinkActive,
-		NumberPipe,
-	],
-	templateUrl: './azots.html',
-	styleUrl: './azots.scss',
+  selector: 'app-azots',
+  imports: [AzotBlock, RouterLink, AsyncPipe, RouterLinkActive, NumberPipe],
+  templateUrl: './azots.html',
+  styleUrl: './azots.scss',
 })
 export class Azots implements OnInit {
-	private azotsService = inject(Azot);
-	protected counter = inject(Counter);
-	private telegram = inject(Telegram);
-	constructor(private router: Router) { }
+  private azotsService = inject(Azot);
+  protected counter = inject(Counter);
+  private telegram = inject(Telegram);
 
-	protected azotInfo = signal<IAzot['data'] | null>(null);
-	protected liters$ = this.azotsService.liters.asObservable();
+  constructor(private router: Router) {}
 
-	async ngOnInit(): Promise<void> {
-		await firstValueFrom(this.azotsService.getAzots()).then((res) => {
-			this.router.navigate([], {
-				queryParams: { liter: res.data.data[0].id },
-			});
-			this.selectAzot(res.data.data[0].id);
-		});
-	}
-	protected async selectAzot(id: number): Promise<void> {
-		await firstValueFrom(this.azotsService.getAzotInfo(id)).then((res) => {
-			this.azotInfo.set(res.data);
-		});
-	}
+  protected azotInfo = signal<IAzot['data'] | null>(null);
+  protected liters$ = this.azotsService.liters.asObservable();
 
-	protected async kupit(
-		product_id: number,
-		product_typ_id: number
-	): Promise<void> {
-		const tg_id = (await this.telegram.getTgUser()).user.id.toString();
-		await firstValueFrom(
-			this.azotsService.kupit(tg_id, product_id, product_typ_id)
-		);
-	}
+  async ngOnInit(): Promise<void> {
+    await firstValueFrom(this.azotsService.getAzots()).then((res) => {
+      const firtsData = res.data.data[0];
+      this.router.navigate([], {
+        queryParams: { liter: firtsData.id },
+      });
+      this.selectAzot(firtsData.id);
+    });
+  }
+  protected async selectAzot(id: number): Promise<void> {
+    await firstValueFrom(this.azotsService.getAzotInfo(id)).then((res) => {
+      this.azotInfo.set(res.data);
+    });
+  }
 
-	protected async minus(
-		product_id: number,
-		product_type_id: number
-	): Promise<void> {
-		const tg_id = (await this.telegram.getTgUser()).user.id.toString();
-		await firstValueFrom(
-			this.azotsService.minus(tg_id, product_id, product_type_id)
-		).then(() => {
-			this.counter.isCounted(product_type_id);
-		});
-	}
+  protected async kupit(
+    product_id: number,
+    product_typ_id: number
+  ): Promise<void> {
+    const tg_id = (await this.telegram.getTgUser()).user.id;
+    await firstValueFrom(
+      this.azotsService.kupit(String(tg_id), product_id, product_typ_id)
+    );
+  }
+
+  protected async minus(
+    product_id: number,
+    product_type_id: number
+  ): Promise<void> {
+    const tg_id = (await this.telegram.getTgUser()).user.id.toString();
+    await firstValueFrom(
+      this.azotsService.minus(tg_id, product_id, product_type_id)
+    ).then(() => {
+      this.counter.isCounted(product_type_id);
+    });
+  }
 }
