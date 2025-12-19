@@ -17,6 +17,10 @@ export class LayoutService {
   constructor(private http: HttpClient) {}
 
   // SUBJECTS
+  public canSpinOrderSubject = new BehaviorSubject<{
+    serie?: boolean;
+    type?: boolean;
+  }>({});
   private updatesSubject = new BehaviorSubject<IUpdates | null>(null);
   public canSpinSubject = new BehaviorSubject<{
     spin: boolean;
