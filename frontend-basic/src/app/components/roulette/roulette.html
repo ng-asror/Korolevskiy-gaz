@@ -44,9 +44,9 @@
 		@if(gift.desc) {
 		<p class="text-white text-[18px] leading-[110%]">{{gift.desc}}</p>
 		}
-		<button type="button"
+		<button type="button" routerLink="/orders"
 			class="bg-gradient cursor-pointer w-full mt-3 h-[40px] block font-[500] gap-x-[5px] rounded-[5px] mx-auto"
-			(click)="giftModal.close(); spin_btn.set(true)">Хорошо</button>
+			(click)="closeGift()">Хорошо</button>
 	</div>
 </dialog>
 }
