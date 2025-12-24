@@ -1,26 +1,26 @@
 @if (azotInfo(); as azot) {
 <div class="bg-black/75 rounded-[10px] overflow-hidden mt-[20px]">
-	<div class="bg-[#E9E4E0] w-full min-h-[373px] rounded-[10px] flex gap-x-[10px] overflow-hidden pr-[10px]">
+	<div class="azot-bg w-full min-h-[373px] rounded-[10px] flex gap-x-[10px] overflow-hidden pr-[10px]">
 		<div class="py-[43px_30px] pl-[20px] w-full grid grid-rows-[auto_auto] content-between">
 			<div>
-				<h1 class="text-black text-[20px] font-[500] mb-4">{{azot.title}}</h1>
+				<h1 class="text-white text-[20px] font-[500] mb-4">{{azot.title}}</h1>
 				<!-- <button type="button" (click)="descToggle()"
 					class="cursor-pointer bg-gradient p-[5px_15px] text-black rounded-[5px] text-[14px] leading-[100%]">
 					Подробнее о товаре</button> -->
-				<b class="text-[16px] leading-[100%] mb-[5px] block text-stone-900 font-[600]">О товаре:</b>
-				<p class="font-light text-stone-900/70 leading-[120%]">{{azot.description}}</p>
-				<b class="text-[16px] leading-[100%] my-[10px_5px] block text-stone-900 font-[600]">Страна производитель:</b>
-				<p class="font-light text-stone-900/70 leading-[120%]">Россия, Череповец</p>
+				<b class="text-[16px] leading-[100%] mb-[5px] block text-white/90 font-[600]">О товаре:</b>
+				<p class="font-light text-white/90 leading-[120%]">{{azot.description}}</p>
+				<b class="text-[16px] leading-[100%] my-[10px_5px] block text-white/90 font-[600]">Страна производитель:</b>
+				<p class="font-light text-white/90 leading-[120%]">Россия, Череповец</p>
 				<div class="flex gap-x-[7px] items-center mt-[12px]">
-					<b class="text-[16px] font-[600]">Товар сертифицирован</b>
+					<b class="text-[16px] text-white font-[600]">Товар сертифицирован</b>
 					<img src="svg/check.svg" alt="check icon" width="20" height="20">
 				</div>
 			</div>
 			<div class="grid grid-cols-3 gap-[10px]">
 				@for (item of azot.price_types; track item.id) {
 				<div>
-					<p class="leading-[100%] text-[#8A8A8A] text-[14px] mb-[5px]">{{item.name}}</p>
-					<h1 class="text-[16px] font-[500] leading-[100%]">{{item.price | uzPrice}}₽</h1>
+					<p class="leading-[100%] text-white/90 text-[14px] mb-[5px]">{{item.name}}</p>
+					<h1 class="text-[16px] text-white font-[500] leading-[100%]">{{item.price | uzPrice}}₽</h1>
 				</div>
 				}
 			</div>
