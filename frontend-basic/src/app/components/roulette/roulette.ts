@@ -11,6 +11,7 @@ import { gsap } from 'gsap';
 import { LayoutService, Telegram } from '../../core';
 import { firstValueFrom } from 'rxjs';
 import { AsyncPipe } from '@angular/common';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-roulette',
@@ -21,6 +22,7 @@ import { AsyncPipe } from '@angular/common';
 export class Roulette implements OnInit {
   private layoutService = inject(LayoutService);
   private telegram = inject(Telegram);
+  private router = inject(Router);
 
   // VARIABLES
   order_id!: number;
@@ -101,5 +103,10 @@ export class Roulette implements OnInit {
         this.giftModal.nativeElement.showModal();
       },
     });
+  }
+  protected closeGift(): void {
+    this.giftModal.nativeElement.close();
+    this.spin_btn.set(true);
+    this.router.navigate(['/orders']);
   }
 }
