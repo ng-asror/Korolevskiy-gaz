@@ -150,40 +150,26 @@ export class Oformit implements OnInit {
     id: number,
     data: IOrderFinishReq
   ): Promise<void> {
+    this.router.navigate(['/']);
     const tg_id = (await this.telegram.getTgUser()).user.id;
     await firstValueFrom(this.orderService.ofotmitFinish(id, data)).then(
       async (res) => {
         console.log(res);
         this.basketService.decorationNext(null);
-        this.router.navigate(['/orders']);
-        const azots = res.data.azots;
-        const accessories = res.data.accessories;
-        if (azots) {
-          if (azots && azots.length > 0) {
-            const hasBallon = azots.length > 0;
-            const hasArenda = azots.some((i) => i.azot?.type === 'Аренда');
-            const hasVikup = azots.some((i) => i.price_type_name === 'Выкуп');
-            const isSingleBallon = azots.length === 1 && azots[0].count === 1;
-            const hasAccessories = accessories && accessories.length > 0;
-            const isArendaWithVikup = hasArenda && hasVikup;
-            const singleBallonWithAccessory = isSingleBallon && hasAccessories;
-            const canShowSpinner =
-              !isArendaWithVikup &&
-              (singleBallonWithAccessory || (!isSingleBallon && hasBallon));
-            if (canShowSpinner) {
-              const res = await firstValueFrom(
-                this.layoutService.can_spin(id, String(tg_id))
-              );
-              setTimeout(() => {
-                this.layoutService.canSpinSubject.next({
-                  spin: res.can_spin,
-                  order_id: id,
-                });
-              }, 1000);
-            }
-          }
-        }
+        this.hasSpin(id, String(tg_id));
       }
     );
+  }
+  private async hasSpin(id: number, tg_id: string): Promise<void> {
+    const res = await firstValueFrom(this.layoutService.can_spin(id, tg_id));
+    if (res.can_spin) {
+      this.router.navigate(['/orders']);
+      setTimeout(() => {
+        this.layoutService.canSpinSubject.next({
+          spin: res.can_spin,
+          order_id: id,
+        });
+      }, 1000);
+    }
   }
 }
