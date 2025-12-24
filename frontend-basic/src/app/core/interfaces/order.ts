@@ -133,67 +133,64 @@ export interface IOrderFinishRes {
     updated_at: string;
     status_text: string;
 
-    azots:
-      | {
+    azots: {
+      id: number;
+      order_id: number;
+      azot_id: number;
+      count: number;
+      price: string;
+      total_price: string;
+      created_at: string;
+      updated_at: string;
+      price_type_id: number;
+      price_type_name: string;
+      azot: {
+        id: number;
+        uuid: string;
+        title: string;
+        type: string;
+        image: string;
+        description: string;
+        country: string;
+        status: string;
+        created_at: string;
+        updated_at: string;
+        image_url: string;
+        price_types: {
           id: number;
-          order_id: number;
+          uuid: string;
           azot_id: number;
-          count: number;
+          name: string;
           price: string;
-          total_price: string;
           created_at: string;
           updated_at: string;
-          price_type_id: number;
-          price_type_name: string;
-          azot: {
-            id: number;
-            uuid: string;
-            title: string;
-            type: string;
-            image: string;
-            description: string;
-            country: string;
-            status: string;
-            created_at: string;
-            updated_at: string;
-            image_url: string;
-            price_types: {
-              id: number;
-              uuid: string;
-              azot_id: number;
-              name: string;
-              price: string;
-              created_at: string;
-              updated_at: string;
-            }[];
-          };
-        }[]
-      | null;
+        }[];
+      };
+    }[];
 
-    accessories:
-      | {
-          id: number;
-          order_id: number;
-          accessory_id: number;
-          count: number;
-          price: string;
-          total_price: string;
-          created_at: string;
-          updated_at: string;
-          accessory: {
-            id: number;
-            uuid: string;
-            title: string;
-            price: string;
-            image: string;
-            description: string;
-            status: string;
-            created_at: string;
-            updated_at: string;
-            image_url: string;
-          };
-        }[]
-      | null;
+    accessories: {
+      id: number;
+      order_id: number;
+      accessory_id: number;
+      count: number;
+      price: string;
+      total_price: string;
+      created_at: string;
+      updated_at: string;
+      accessory: {
+        id: number;
+        uuid: string;
+        title: string;
+        price: string;
+        image: string;
+        description: string;
+        status: string;
+        created_at: string;
+        updated_at: string;
+        count: number;
+        image_url: string;
+      };
+    }[];
 
     services: any[];
     promocode: any;
